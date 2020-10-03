@@ -23,9 +23,16 @@ public class Grid {
                 this.grid[i][j] = new Cell(j,i,1,0);
             }
         }
+        generateMap();
     } // ends the Grid() constructor
 
-    
+
+    /**
+     * This method will be used in order to generate all the various types and points in the map.
+     */
+    private void generateMap() {
+
+    } // ends the generateMap() 
 
     /**
      * This method will return the grid.
