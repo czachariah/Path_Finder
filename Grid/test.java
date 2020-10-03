@@ -7,4 +7,5 @@ public class test {
         grid[0][0].changeType(2);
         test.printGrid();
     }
+    
 }
