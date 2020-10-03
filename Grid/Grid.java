@@ -31,7 +31,7 @@ public class Grid {
      * This method will be used in order to generate all the various types and points in the map.
      */
     private void generateMap() {
-
+        // 1.  start with getting the 8 random points and setting the hard type areas
     } // ends the generateMap() 
 
     /**
