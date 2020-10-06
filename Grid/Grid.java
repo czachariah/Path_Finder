@@ -32,7 +32,15 @@ public class Grid {
      */
     private void generateMap() {
         // 1.  start with getting the 8 random points and setting the hard type areas
+        setHardCells();
     } // ends the generateMap() 
+
+    /**
+     * This method will be used in order to set all the hard to traverse cells in the grid.
+     */
+    private void setHardCells() {
+        
+    } // ends the setHardCells() method
 
     /**
      * This method will return the grid.
@@ -47,8 +55,8 @@ public class Grid {
      * 0 => blocked
      * 1 => unblocked
      * 2 => hard
-     * 3 => unblocked w/ highway
-     * 4 => hard w/ highway
+     * a => unblocked w/ highway
+     * b => hard w/ highway
      */
     public void printGrid() {
         for (int i = 0 ; i < HEIGHT ; ++i) {
@@ -59,9 +67,9 @@ public class Grid {
                 } else {
                     if (cur.hasHighway()) {
                         if (cur.getType() == 1) {
-                            System.out.print(3);
+                            System.out.print("a");
                         } else {
-                            System.out.print(4);
+                            System.out.print("b");
                         } 
                     } else {
                         System.out.print(cur.getType());
