@@ -6,6 +6,7 @@ public class test {
         Cell [][] grid = test.getGrid();
         grid[0][0].changeType(2);
         test.printGrid();
+        
     }
     
 }
