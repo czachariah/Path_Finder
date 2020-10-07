@@ -8,12 +8,20 @@ import java.util.Random;
  */
 public class Grid {
     /* Global varibales*/
-    private final int HEIGHT = 120;
-    private final int WIDTH = 160;
+    private final int HEIGHT = 120;     // height of the grid
+    private final int WIDTH = 160;      // width of the grid
 
-    private final int NUMBER_HARD_CELL_CENTERS = 8;
-    private final int HARD_CELL_AREA = 31;
-    private final float HARD_CELL_PROB = 0.5f;
+    private final int NUMBER_HARD_CELL_CENTERS = 8; // the total number of hard cell centers
+    private final int HARD_CELL_AREA = 31;          // the total square area the hard cell centers cover
+    private final float HARD_CELL_PROB = 0.5f;      // the probability a cell in the hard area can become a hard cell
+
+    private final int NUMBER_OF_HIGHWAYS = 4;               // total number of highways to create
+    private final int NUMBER_OF_HIGHWAY_TRIES = 10;         // total number of tries to make highways before restarting the algorithm
+    private final int FIRST_HIGHWAY_PATH = 20;              // length of first straight path before highways starts turning
+    private final int MIN_HIGHWAY_LENGTH = 100;             // minimum length of the highway
+    private final float HIGHWAY_STAYS_SAME_DIR = 0.6f;      // probability that the highway stays in the same direction
+    private final float HIGHWAY_GOES_UP_OR_LEFT = 0.2f;     // probability that the highway goes in the up or left direction 
+    private final float HIGHWAY_GOES_DOWN_OR_RIGHT = 0.2f;  // probability that the highway goes in the down or right direction 
 
     private Cell[][] grid;
     private int[][] hardCellCenters = new int[NUMBER_HARD_CELL_CENTERS][2];
@@ -70,7 +78,7 @@ public class Grid {
             // go through the area and fill in the hard cells based on the probability
             for (int j = left_border; j <= right_border ; ++j) {
                 for(int k = top_border; k <= bottom_border ; ++k) {
-                    float curProb = (rand.nextInt(10)+1)/10f;
+                    float curProb = (rand.nextInt(10)+1)/10f;   // get probability from [1.0 , 10.0]
                     if (curProb >= HARD_CELL_PROB) {
                         this.grid[k][j].changeType(2);
                     }
