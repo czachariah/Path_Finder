@@ -47,14 +47,14 @@ public class Grid {
      * This method will be used in order to set all the hard to traverse cells in the grid.
      */
     private void setHardCells() {
-        for (int i = 0 ; i < 8 ; ++i) {
+        for (int i = 0 ; i < NUMBER_HARD_CELL_CENTERS ; ++i) {
             // get random (x,y)
             int xCenter = rand.nextInt(WIDTH);  // random value between [0, 160)
             int yCenter = rand.nextInt(HEIGHT); // random value between [0, 120)
 
             hardCellCenters[i][0] = xCenter;
             hardCellCenters[i][1] = yCenter;
-
+            
             // get the hard cell area borders
             int left_border = xCenter - (HARD_CELL_AREA/2);
             int right_border = xCenter + (HARD_CELL_AREA/2);
@@ -68,8 +68,8 @@ public class Grid {
             if (bottom_border >= HEIGHT) { bottom_border = (HEIGHT - 1); }
 
             // go through the area and fill in the hard cells based on the probability
-            for (int j = left_border; i <= right_border ; ++i) {
-                for(int k = top_border; j <= bottom_border ; ++j) {
+            for (int j = left_border; j <= right_border ; ++j) {
+                for(int k = top_border; k <= bottom_border ; ++k) {
                     float curProb = (rand.nextInt(10)+1)/10f;
                     if (curProb >= HARD_CELL_PROB) {
                         this.grid[k][j].changeType(2);
