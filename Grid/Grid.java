@@ -1,6 +1,7 @@
 package Grid;
 import java.util.Random;
 
+
 /**
  * This is the Grid class.
  * This class can be used in order to create the grid of cells and construct the map.
@@ -27,6 +28,7 @@ public class Grid {
     private int[][] hardCellCenters = new int[NUMBER_HARD_CELL_CENTERS][2];
     private Random rand = new Random(); 
 
+
     /**
      * This is the Grid constructor.
      * This will initialize the grid will unblocked cells. 
@@ -43,12 +45,15 @@ public class Grid {
     } // ends the Grid() constructor
 
 
+
     /**
      * This method will be used in order to generate all the various types and points in the map.
      */
     private void generateMap() {
         setHardCells();
+        setHighways();
     } // ends the generateMap() 
+
 
 
     /**
@@ -78,15 +83,75 @@ public class Grid {
             // go through the area and fill in the hard cells based on the probability
             for (int j = left_border; j <= right_border ; ++j) {
                 for(int k = top_border; k <= bottom_border ; ++k) {
-                    float curProb = (rand.nextInt(10)+1)/10f;   // get probability from [1.0 , 10.0]
+                    float curProb = (rand.nextInt(10)+1)/10f;   // get probability from [0.1 , 1.0]
                     if (curProb >= HARD_CELL_PROB) {
                         this.grid[k][j].changeType(2);
                     }
                 }
             }
-
-        } // ends the for loop
+        } // ends the for loopß
     } // ends the setHardCells() method
+
+
+
+    /**
+     * This method will create and set the highways on the grid.
+     */
+    private void setHighways() {
+        for (int i = 0 ; i < NUMBER_OF_HIGHWAYS ; ++i) {
+            int[] startPoint = getBoundaryPoint();  // start point for the highway
+            
+        }
+    } // ends the 
+
+
+
+    /**
+     * This method will choose a random boundary and a starting point.
+     * @return an int[2] array which will be the starting point for the highway
+     */
+    private int[] getBoundaryPoint() {
+        int randBound = rand.nextInt(4) + 1; // [1,4]
+        int [] point = new int[2];
+        if (randBound == 1) {  // Top Border
+            point[0] = 0; 
+            point[1] = rand.nextInt(160); // [0,159];
+
+			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
+				point[0] = 0; 
+                point[1] = rand.nextInt(160); // [0,159];
+			}
+			return point;
+		} else if (randBound == 2) { // Right Border
+            point[0] = rand.nextInt(120); // [0,119]
+			point[1] = 159; 
+
+			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
+				point[0] = rand.nextInt(120); // [0,119]
+                point[1] = 159; 
+            }
+			return point;
+        } else if (randBound == 3) {  // Bottom Border
+            point[0] = 119;
+			point[1] = rand.nextInt(160); // [0,159]
+
+			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
+				point[0] = 119;
+			    point[1] = rand.nextInt(160); // [0,159]
+            }
+			return point;
+        } else {  // Left Border
+            point[0] = rand.nextInt(120); // [0,119]
+			point[1] = 0; 
+
+			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
+				point[0] = rand.nextInt(120); // [0,119]
+                point[1] = 0; 
+            }
+			return point;
+        }
+    } // ends getBoundaryPoint() method
+
 
 
     /**
@@ -98,13 +163,14 @@ public class Grid {
     } // ends the getGrid() method
 
 
+
     /**
      * This method will print out the grid to Standard Output.
      * 0 => blocked
      * 1 => unblocked
      * 2 => hard
-     * 3 => unblocked w/ highway
-     * 4 => hard w/ highway
+     * a => unblocked w/ highway    (type = 3)
+     * b => hard w/ highway         (type = 4)
      */
     public void printGrid() {
         for (int i = 0 ; i < HEIGHT ; ++i) {
@@ -115,9 +181,9 @@ public class Grid {
                 } else {
                     if (cur.hasHighway()) {
                         if (cur.getType() == 1) {
-                            System.out.print(3);
+                            System.out.print("a");
                         } else {
-                            System.out.print(4);
+                            System.out.print("b");
                         } 
                     } else {
                         System.out.print(cur.getType());
