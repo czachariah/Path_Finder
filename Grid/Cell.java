@@ -42,6 +42,8 @@ public class Cell {
      * 0 => blocked cell
      * 1 => unblocked cell
      * 2 => hard cell
+     * 3 => unblocked w/ highway
+     * 4 => hard w/ highway
      * @return an int that represents the type of the cell
      */
     public int getType() {

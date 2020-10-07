@@ -95,8 +95,8 @@ public class Grid {
      * 0 => blocked
      * 1 => unblocked
      * 2 => hard
-     * a => unblocked w/ highway
-     * b => hard w/ highway
+     * 3 => unblocked w/ highway
+     * 4 => hard w/ highway
      */
     public void printGrid() {
         for (int i = 0 ; i < HEIGHT ; ++i) {
@@ -107,9 +107,9 @@ public class Grid {
                 } else {
                     if (cur.hasHighway()) {
                         if (cur.getType() == 1) {
-                            System.out.print("a");
+                            System.out.print(3);
                         } else {
-                            System.out.print("b");
+                            System.out.print(4);
                         } 
                     } else {
                         System.out.print(cur.getType());
