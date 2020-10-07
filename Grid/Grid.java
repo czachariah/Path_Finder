@@ -1,8 +1,6 @@
 package Grid;
+import java.util.LinkedList;
 import java.util.Random;
-
-import javax.xml.namespace.QName;
-
 
 /**
  * This is the Grid class.
@@ -19,12 +17,11 @@ public class Grid {
     private final float HARD_CELL_PROB = 0.5f;      // the probability a cell in the hard area can become a hard cell
 
     private final int NUMBER_OF_HIGHWAYS = 4;               // total number of highways to create
-    private final int NUMBER_OF_HIGHWAY_TRIES = 5;         // total number of tries to make highways before restarting the algorithm
-    private final int FIRST_HIGHWAY_PATH = 20;              // length of first straight path before highways starts turning
+    private final int NUMBER_OF_HIGHWAY_TRIES = 5;          // total number of tries to make highways before restarting the algorithm
+    private final int STANDARD_HIGHWAY_PATH = 20;           // length of cells turned into a highway of the same direction before turning
     private final int MIN_HIGHWAY_LENGTH = 100;             // minimum length of the highway
     private final float HIGHWAY_STAYS_SAME_DIR = 0.6f;      // probability that the highway stays in the same direction
-    private final float HIGHWAY_GOES_UP_OR_LEFT = 0.2f;     // probability that the highway goes in the up or left direction 
-    private final float HIGHWAY_GOES_DOWN_OR_RIGHT = 0.2f;  // probability that the highway goes in the down or right direction 
+    //private final float HIGHWAY_GOES_UP_OR_LEFT = 0.2f;     // probability that the highway goes in the up or left direction 
 
     private Cell[][] grid;
     private int[][] hardCellCenters = new int[NUMBER_HARD_CELL_CENTERS][2];
@@ -54,7 +51,7 @@ public class Grid {
     private void generateMap() {
         setHardCells();
         while (!setHighways()) {
-            resetHighways();
+            resetAllHighways();
         }
     } // ends the generateMap() 
 
@@ -121,37 +118,209 @@ public class Grid {
      * @return true if the highway is successfully created and false otherwise.
      */
     private boolean createHighway() {
+        int highwayLen = 0;
         int[] startPoint = getBoundaryPoint();  // start point for the highway
+        int curX = startPoint[0];
+        int curY = startPoint[1];
 
         int dir = 0;
-        if (startPoint[0] == 0) { // Top Border
+        if (curX == 0) { // Top Border
             dir = 3;
-            this.grid[startPoint[0]][startPoint[1]].changeHighwayDir(dir);
-        } else if (startPoint[1] == 159) { // Right Border
+            this.grid[curX][curY].changeHighwayDir(dir);
+            if (this.grid[curX][curY].getType() == 1) {
+                this.grid[curX][curY].changeType(3);
+            } else {
+                this.grid[curX][curY].changeType(4);
+            }
+        } else if (curY == 159) { // Right Border
             dir = 4;
-            this.grid[startPoint[0]][startPoint[1]].changeHighwayDir(dir);
-        } else if (startPoint[0] == 119) { // Bottom Border
+            this.grid[curX][curY].changeHighwayDir(dir);
+            if (this.grid[curX][curY].getType() == 1) {
+                this.grid[curX][curY].changeType(3);
+            } else {
+                this.grid[curX][curY].changeType(4);
+            }
+        } else if (curX == 119) { // Bottom Border
             dir = 1;
-            this.grid[startPoint[0]][startPoint[1]].changeHighwayDir(dir);
+            this.grid[curX][curY].changeHighwayDir(dir);
+            if (this.grid[curX][curY].getType() == 1) {
+                this.grid[curX][curY].changeType(3);
+            } else {
+                this.grid[curX][curY].changeType(4);
+            }
         } else { // Left Border
             dir = 2;
-            this.grid[startPoint[0]][startPoint[1]].changeHighwayDir(dir);
-        }
-        
-        int highwayLen = 1;
-        for (int i = 1; i <= FIRST_HIGHWAY_PATH ; ++i) {    // make the first set of highway cells
-            
+            this.grid[curX][curY].changeHighwayDir(dir);
+            if (this.grid[curX][curY].getType() == 1) {
+                this.grid[curX][curY].changeType(3);
+            } else {
+                this.grid[curX][curY].changeType(4);
+            }
         }
 
+        // create a structure to hold the current cell coordinates that are going to become highways
+        LinkedList<int[]> list = new LinkedList<>();
+        int[] arr = new int[2];
 
+        arr[0] = curX;
+        arr[1] = curY;
+        list.add(arr);
+        ++highwayLen;
+
+        // get direction, make highway in that direction for 20 cells and repeat until you hit a boundary or another highway
+        while (true) {
+            for (int i = 1; i <= STANDARD_HIGHWAY_PATH ; ++i) {
+                System.out.println("(" + curX + " , " + curY + " ) | " + dir);
+                if (dir == 3) { // South
+                    curX += 1;
+                    if (curX > 119) { // crossed bottom border
+                        if (highwayLen >= MIN_HIGHWAY_LENGTH) {
+                            return true;
+                        } else {
+                            resetCurrentHighway(list);
+                            return false;
+                        }
+                    } else {
+                        if (!this.grid[curX][curY].hasHighway()) {
+                            this.grid[curX][curY].changeHighwayDir(dir);
+                            if (this.grid[curX][curY].getType() == 1) {
+                                this.grid[curX][curY].changeType(3);
+                            } else {
+                                this.grid[curX][curY].changeType(4);
+                            }
+                            ++highwayLen;
+                            arr[0] = curX;
+                            arr[1] = curY;
+                            list.add(arr);
+                        } else {
+                            resetCurrentHighway(list);
+                            return false;
+                        }
+                    }
+                } else if (dir == 4) { // West
+                    curY -= 1;
+                    if (curY < 0) { // crossed left border
+                        if (highwayLen >= MIN_HIGHWAY_LENGTH) {
+                            return true;
+                        } else {
+                            resetCurrentHighway(list);
+                            return false;
+                        }
+                    } else {
+                        if (!this.grid[curX][curY].hasHighway()) {
+                            this.grid[curX][curY].changeHighwayDir(dir);
+                            if (this.grid[curX][curY].getType() == 1) {
+                                this.grid[curX][curY].changeType(3);
+                            } else {
+                                this.grid[curX][curY].changeType(4);
+                            }
+                            ++highwayLen;
+                            arr[0] = curX;
+                            arr[1] = curY;
+                            list.add(arr);
+                        } else {
+                            resetCurrentHighway(list);
+                            return false;
+                        }
+                    }
+                } else if (dir == 1) { // North
+                    curX -= 1;
+                    if (curX < 0) { // crossed top border
+                        if (highwayLen >= MIN_HIGHWAY_LENGTH) {
+                            return true;
+                        } else {
+                            resetCurrentHighway(list);
+                            return false;
+                        }
+                    } else {
+                        if (!this.grid[curX][curY].hasHighway()) {
+                            this.grid[curX][curY].changeHighwayDir(dir);
+                            if (this.grid[curX][curY].getType() == 1) {
+                                this.grid[curX][curY].changeType(3);
+                            } else {
+                                this.grid[curX][curY].changeType(4);
+                            }
+                            ++highwayLen;
+                            arr[0] = curX;
+                            arr[1] = curY;
+                            list.add(arr);
+                        } else {
+                            resetCurrentHighway(list);
+                            return false;
+                        }
+                    }
+                } else { // East
+                    curY += 1;
+                    if (curY > 159) { // crossed left border
+                        if (highwayLen >= MIN_HIGHWAY_LENGTH) {
+                            return true;
+                        } else {
+                            resetCurrentHighway(list);
+                            return false;
+                        }
+                    } else {
+                        if (!this.grid[curX][curY].hasHighway()) {
+                            this.grid[curX][curY].changeHighwayDir(dir);
+                            if (this.grid[curX][curY].getType() == 1) {
+                                this.grid[curX][curY].changeType(3);
+                            } else {
+                                this.grid[curX][curY].changeType(4);
+                            }
+                            ++highwayLen;
+                            arr[0] = curX;
+                            arr[1] = curY;
+                            list.add(arr);
+                        } else {
+                            resetCurrentHighway(list);
+                            return false;
+                        }
+                    }
+                }
+            }// ends the for-loop
+
+            // now determine the new direction for the highway
+            float probDir = (rand.nextInt(10)+1)/10f; // [0.1 , 1.0]
+            if (probDir < HIGHWAY_STAYS_SAME_DIR) {
+                if ((dir == 1) || (dir == 3)) { // current direction going north or south
+                    probDir = (rand.nextInt(10)+1)/10f; // [0.1 , 1.0]
+                    if (probDir <= 0.5) {
+                        dir = 2;
+                    } else {
+                        dir = 4;
+                    }
+                } else { // current direction going left or right
+                    probDir = (rand.nextInt(10)+1)/10f; // [0.1 , 1.0]
+                    if (probDir <= 0.5) {
+                        dir = 1;
+                    } else {
+                        dir = 3;
+                    }
+                }
+            }
+        } // ends the while-loop
     } // ends the createHighway() method
 
 
+    /**
+     * This method will be used in order to reset the current highway.
+     * @param list is the list of coordinates to go through and revert back to normal
+     */
+    private void resetCurrentHighway(LinkedList<int[]> list) {
+        for (int[] arr : list) {
+            if (this.grid[arr[0]][arr[1]].getType() == 3) {
+                this.grid[arr[0]][arr[1]].changeType(1);
+                this.grid[arr[0]][arr[1]].changeType(0);
+            } else {
+                this.grid[arr[0]][arr[1]].changeType(2);
+                this.grid[arr[0]][arr[1]].changeType(0);
+            }
+        }
+    } // ends the resetCurrentHighway() method
     
     /**
-     * This method will be called in order to get rid of the current highways on the grid.
+     * This method will be called in order to reset all the highways on the grid.
      */
-    private void resetHighways() {
+    private void resetAllHighways() {
         for (int i = 0; i < HEIGHT ; ++i) {
             for (int j = 0 ; j < WIDTH ; ++j) {
                 if (this.grid[i][j].getType() == 3) {
