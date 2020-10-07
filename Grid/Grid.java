@@ -1,6 +1,8 @@
 package Grid;
 import java.util.Random;
 
+import javax.xml.namespace.QName;
+
 
 /**
  * This is the Grid class.
@@ -17,7 +19,7 @@ public class Grid {
     private final float HARD_CELL_PROB = 0.5f;      // the probability a cell in the hard area can become a hard cell
 
     private final int NUMBER_OF_HIGHWAYS = 4;               // total number of highways to create
-    private final int NUMBER_OF_HIGHWAY_TRIES = 10;         // total number of tries to make highways before restarting the algorithm
+    private final int NUMBER_OF_HIGHWAY_TRIES = 5;         // total number of tries to make highways before restarting the algorithm
     private final int FIRST_HIGHWAY_PATH = 20;              // length of first straight path before highways starts turning
     private final int MIN_HIGHWAY_LENGTH = 100;             // minimum length of the highway
     private final float HIGHWAY_STAYS_SAME_DIR = 0.6f;      // probability that the highway stays in the same direction
@@ -51,7 +53,9 @@ public class Grid {
      */
     private void generateMap() {
         setHardCells();
-        setHighways();
+        while (!setHighways()) {
+            resetHighways();
+        }
     } // ends the generateMap() 
 
 
@@ -95,20 +99,76 @@ public class Grid {
 
 
     /**
-     * This method will create and set the highways on the grid.
+     * This method will set the highways on the grid.
+     * @return true if the highways have been created and false otherwise
      */
-    private void setHighways() {
+    private boolean setHighways() {
         for (int i = 0 ; i < NUMBER_OF_HIGHWAYS ; ++i) {
-            int[] startPoint = getBoundaryPoint();  // start point for the highway
+            int curTry = 1;
+            while (curTry <= NUMBER_OF_HIGHWAY_TRIES && !createHighway()) {  // will continue to try to make highways until the max number of tries
+				++curTry;
+            }
+            if (curTry > NUMBER_OF_HIGHWAY_TRIES) { // highway creation was unsuccessful and must start over again from the top
+                return false;
+            }
+        }
+        return true;
+    } // ends the 
+
+
+    /**
+     * This method will be used in order to create the highway.
+     * @return true if the highway is successfully created and false otherwise.
+     */
+    private boolean createHighway() {
+        int[] startPoint = getBoundaryPoint();  // start point for the highway
+
+        int dir = 0;
+        if (startPoint[0] == 0) { // Top Border
+            dir = 3;
+            this.grid[startPoint[0]][startPoint[1]].changeHighwayDir(dir);
+        } else if (startPoint[1] == 159) { // Right Border
+            dir = 4;
+            this.grid[startPoint[0]][startPoint[1]].changeHighwayDir(dir);
+        } else if (startPoint[0] == 119) { // Bottom Border
+            dir = 1;
+            this.grid[startPoint[0]][startPoint[1]].changeHighwayDir(dir);
+        } else { // Left Border
+            dir = 2;
+            this.grid[startPoint[0]][startPoint[1]].changeHighwayDir(dir);
+        }
+        
+        int highwayLen = 1;
+        for (int i = 1; i <= FIRST_HIGHWAY_PATH ; ++i) {    // make the first set of highway cells
             
         }
-    } // ends the 
+
+
+    } // ends the createHighway() method
+
+
+    
+    /**
+     * This method will be called in order to get rid of the current highways on the grid.
+     */
+    private void resetHighways() {
+        for (int i = 0; i < HEIGHT ; ++i) {
+            for (int j = 0 ; j < WIDTH ; ++j) {
+                if (this.grid[i][j].getType() == 3) {
+                    this.grid[i][j].changeType(1);
+                }
+                if (this.grid[i][j].getType() == 4) {
+                    this.grid[i][j].changeType(2);
+                }
+            }
+        }
+    } // ends the resetHighways() method
 
 
 
     /**
      * This method will choose a random boundary and a starting point.
-     * @return an int[2] array which will be the starting point for the highway
+     * @return an int[2] array which will be the starting point for the highway.
      */
     private int[] getBoundaryPoint() {
         int randBound = rand.nextInt(4) + 1; // [1,4]
