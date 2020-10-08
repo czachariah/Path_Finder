@@ -21,11 +21,14 @@ public class Grid {
     private final int STANDARD_HIGHWAY_PATH = 20;           // length of cells turned into a highway of the same direction before turning
     private final int MIN_HIGHWAY_LENGTH = 100;             // minimum length of the highway
     private final float HIGHWAY_STAYS_SAME_DIR = 0.6f;      // probability that the highway stays in the same direction
-    //private final float HIGHWAY_GOES_UP_OR_LEFT = 0.2f;     // probability that the highway goes in the up or left direction 
 
-    private Cell[][] grid;
-    private int[][] hardCellCenters = new int[NUMBER_HARD_CELL_CENTERS][2];
-    private Random rand = new Random(); 
+    private final float BLOCKED_CELL_PER = 0.2f;            // the percentage of the probability that will be made up of blocked cells
+
+    private Cell[][] grid;                                                      // main grid
+    private int[][] hardCellCenters = new int[NUMBER_HARD_CELL_CENTERS][2];     // array of all the hard cell centers
+    private Random rand = new Random();                                         // randomizer
+    private int[][] startCell = new int[1][2];                                  // location of the startCell
+    private int[][] endCell = new int[1][2];                                    // location of the endCell
 
 
     /**
@@ -190,7 +193,7 @@ public class Grid {
                     } else {
                         dir = 4;
                     }
-                } else { // current direction going left or right
+                } else { // current direction going east or west
                     probDir = (rand.nextInt(10)+1)/10f; // [0.1 , 1.0]
                     if (probDir <= 0.5) {
                         dir = 1;
@@ -269,7 +272,6 @@ public class Grid {
         if (randBound == 1) {  // Top Border
             point[0] = 0; 
             point[1] = rand.nextInt(160); // [0,159];
-
 			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
 				point[0] = 0; 
                 point[1] = rand.nextInt(160); // [0,159];
@@ -278,7 +280,6 @@ public class Grid {
 		} else if (randBound == 2) { // Right Border
             point[0] = rand.nextInt(120); // [0,119]
 			point[1] = 159; 
-
 			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
 				point[0] = rand.nextInt(120); // [0,119]
                 point[1] = 159; 
@@ -287,7 +288,6 @@ public class Grid {
         } else if (randBound == 3) {  // Bottom Border
             point[0] = 119;
 			point[1] = rand.nextInt(160); // [0,159]
-
 			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
 				point[0] = 119;
 			    point[1] = rand.nextInt(160); // [0,159]
@@ -296,7 +296,6 @@ public class Grid {
         } else {  // Left Border
             point[0] = rand.nextInt(120); // [0,119]
 			point[1] = 0; 
-
 			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
 				point[0] = rand.nextInt(120); // [0,119]
                 point[1] = 0; 
@@ -311,7 +310,16 @@ public class Grid {
      * This method will add blocked cells to 20% of the entire grid.
      */
     private void setBlockedCells() {
-
+        int numBlocked = (int)(WIDTH*HEIGHT*BLOCKED_CELL_PER);
+        int i = 0;
+        while (i < numBlocked) {
+            int x = rand.nextInt(120); // [0,119]
+            int y = rand.nextInt(160); // [0,159]
+            if (!this.grid[x][y].hasHighway()) {    // cannot block highways
+                this.grid[x][y].changeType(0);
+                ++i;
+            }
+        }
     } // ends the setBlockedCells() method  
 
 
@@ -335,6 +343,7 @@ public class Grid {
      * b => hard w/ highway         (type = 4)
      */
     public void printGrid() {
+        System.out.println("Grid:");
         for (int i = 0 ; i < HEIGHT ; ++i) {
             for (int j = 0 ; j < WIDTH ; ++j) {
                 Cell cur = this.grid[i][j];
@@ -355,6 +364,7 @@ public class Grid {
      * This method will print out all the hard centers of the grid.
      */
     public void printHardCenters() {
+        System.out.println("Hard-Cell Centers:");
         for (int i = 0 ; i < NUMBER_HARD_CELL_CENTERS ; ++i) {
             System.out.println("(" + hardCellCenters[i][0] + " , " + hardCellCenters[i][1] + ")");
         }
