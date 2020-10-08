@@ -35,9 +35,9 @@ public class Grid {
     public Grid() {
         this.grid = new Cell[HEIGHT][WIDTH];
         // create initial grid of unblocked cells
-        for (int i = 0 ; i < HEIGHT ; ++i) {            // height   ==   rows    ==   y value
-            for (int j = 0 ; j < WIDTH ; ++j) {         // width    ==   columns ==   x value
-                this.grid[i][j] = new Cell(j,i,1,0);
+        for (int i = 0 ; i < HEIGHT ; ++i) {            
+            for (int j = 0 ; j < WIDTH ; ++j) {
+                this.grid[i][j] = new Cell(i,j,1,0);
             }
         }
         generateMap();
@@ -53,6 +53,7 @@ public class Grid {
         while (!setHighways()) {
             resetAllHighways();
         }
+        setBlockedCells();
     } // ends the generateMap() 
 
 
@@ -156,16 +157,16 @@ public class Grid {
                 
                 if (i < STANDARD_HIGHWAY_PATH) {
                     this.grid[curX][curY].changeHighwayDir(dir);
-                        if (this.grid[curX][curY].getType() == 1) {
-                            this.grid[curX][curY].changeType(3);
-                        } else {
-                            this.grid[curX][curY].changeType(4);
-                        }
-                        ++highwayLen;
-                        int[] arr = new int[2];
-                        arr[0] = curX;
-                        arr[1] = curY;
-                        list.addLast(arr);
+                    if (this.grid[curX][curY].getType() == 1) {
+                        this.grid[curX][curY].changeType(3);
+                    } else if (this.grid[curX][curY].getType() == 2) {
+                        this.grid[curX][curY].changeType(4);
+                    } else {}
+                    ++highwayLen;
+                    int[] arr = new int[2];
+                    arr[0] = curX;
+                    arr[1] = curY;
+                    list.addLast(arr);
                     
                     if (dir == 3) {
                         curX += 1;
@@ -176,16 +177,7 @@ public class Grid {
                     } else {
                         curY += 1;
                     }
-                } else {
-                    if (this.grid[curX][curY].getType() == 3) {
-                        this.grid[curX][curY].changeType(1);
-                        this.grid[curX][curY].changeHighwayDir(0);
-                    } else {
-                        this.grid[curX][curY].changeType(2);
-                        this.grid[curX][curY].changeHighwayDir(0);
-                    }
-                }
-
+                } 
             }// ends the for-loop
 
             // now determine the new direction for the highway
@@ -228,6 +220,7 @@ public class Grid {
     } // ends the isValidCell() method
 
 
+
     /**
      * This method will be used in order to reset the current highway.
      * @param list is the list of coordinates to go through and revert back to normal
@@ -237,13 +230,15 @@ public class Grid {
             if (this.grid[arr[0]][arr[1]].getType() == 3) {
                 this.grid[arr[0]][arr[1]].changeType(1);
                 this.grid[arr[0]][arr[1]].changeHighwayDir(0);
-            } else {
+            } else if (this.grid[arr[0]][arr[1]].getType() == 4){
                 this.grid[arr[0]][arr[1]].changeType(2);
                 this.grid[arr[0]][arr[1]].changeHighwayDir(0);
-            }
+            } else {}
         }
     } // ends the resetCurrentHighway() method
     
+
+
     /**
      * This method will be called in order to reset all the highways on the grid.
      */
@@ -313,6 +308,15 @@ public class Grid {
 
 
     /**
+     * This method will add blocked cells to 20% of the entire grid.
+     */
+    private void setBlockedCells() {
+
+    } // ends the setBlockedCells() method  
+
+
+
+    /**
      * This method will return the grid.
      * @return the Cell grid
      */
@@ -334,22 +338,26 @@ public class Grid {
         for (int i = 0 ; i < HEIGHT ; ++i) {
             for (int j = 0 ; j < WIDTH ; ++j) {
                 Cell cur = this.grid[i][j];
-                if (cur.getType() == 0) {
-                    System.out.print(0);    // this is blocked (no need to check for highways)
+                if (cur.getType() == 3) {
+                    System.out.print("a");
+                } else if (cur.getType() == 4) {
+                    System.out.print("b");
                 } else {
-                    if (cur.hasHighway()) {
-                        if (cur.getType() == 1) {
-                            System.out.print("a");
-                        } else {
-                            System.out.print("b");
-                        } 
-                    } else {
-                        System.out.print(cur.getType());
-                    }
+                    System.out.print(cur.getType());
                 }
             }
             System.out.println();
         }
     } // ends the printGrid() method
+
+
+    /**
+     * This method will print out all the hard centers of the grid.
+     */
+    public void printHardCenters() {
+        for (int i = 0 ; i < NUMBER_HARD_CELL_CENTERS ; ++i) {
+            System.out.println("(" + hardCellCenters[i][0] + " , " + hardCellCenters[i][1] + ")");
+        }
+    } // ends that printHardCenters() method
     
 } // ends the Grid class
