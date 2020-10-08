@@ -24,6 +24,9 @@ public class Grid {
 
     private final float BLOCKED_CELL_PER = 0.2f;            // the percentage of the probability that will be made up of blocked cells
 
+    private final int MIN_DIST_BETWEEN_START_AND_END = 100; // the minimum distance between the start and end points
+    private final int CHOICE_REGION_AREA = 20;              // size of the area that the start or end cell can be placed from a random border 
+
     private Cell[][] grid;                                                      // main grid
     private int[][] hardCellCenters = new int[NUMBER_HARD_CELL_CENTERS][2];     // array of all the hard cell centers
     private Random rand = new Random();                                         // randomizer
@@ -57,6 +60,7 @@ public class Grid {
             resetAllHighways();
         }
         setBlockedCells();
+        setStartAndEnd();
     } // ends the generateMap() 
 
 
@@ -323,6 +327,102 @@ public class Grid {
     } // ends the setBlockedCells() method  
 
 
+
+    /**
+     * This method will set the start and end cells in the grid.
+     */
+    private void setStartAndEnd() {
+        int dist = 0;
+        int x1 , y1, x2, y2;
+        x1 = y1 = x2 = y2 = 0;
+        while (dist < MIN_DIST_BETWEEN_START_AND_END) {
+            // get coordinate for the start cell
+            int dir = rand.nextInt(4) + 1; 
+            if (dir == 1) { // top border
+                x1 = rand.nextInt(CHOICE_REGION_AREA);      // [0,19]
+                y1 = rand.nextInt(WIDTH);                   // [0,159]
+                while (this.grid[x1][y1].getType() == 0) {  // if the choice is blocked, try another random location
+                    x1 = rand.nextInt(CHOICE_REGION_AREA);  // [0,19]
+                    y1 = rand.nextInt(WIDTH);               // [0,159]
+                }
+            } else if (dir == 2) { // right border
+                x1 = rand.nextInt(HEIGHT);                                  // [0,119]
+                y1 = (WIDTH - 1) - rand.nextInt(CHOICE_REGION_AREA);        // [140,159]
+                while (this.grid[x1][y1].getType() == 0) {                  // if the choice is blocked, try another random location
+                    x1 = rand.nextInt(120);                                 // [0,119]
+                    y1 = (WIDTH - 1) - rand.nextInt(CHOICE_REGION_AREA);    // [140,159]
+                }
+            } else if (dir == 3) { // bottom border
+                x1 = (HEIGHT - 1) - rand.nextInt(CHOICE_REGION_AREA);       // [100,119]
+                y1 = rand.nextInt(WIDTH);                                   // [0,159]
+                while (this.grid[x1][y1].getType() == 0) {                  // if the choice is blocked, try another random location
+                    x1 = (HEIGHT - 1) - rand.nextInt(CHOICE_REGION_AREA);   // [100,119]
+                    y1 = rand.nextInt(WIDTH);                               // [0,159]
+                }
+            } else { // left border
+                x1 = rand.nextInt(HEIGHT);                  // [0,119]
+                y1 = rand.nextInt(CHOICE_REGION_AREA);      // [0,19]
+                while (this.grid[x1][y1].getType() == 0) {  // if the choice is blocked, try another random location
+                    x1 = rand.nextInt(HEIGHT);              // [0,119]
+                    y1 = rand.nextInt(CHOICE_REGION_AREA);  // [0,19]
+                }
+            }
+
+            // get coordinate for the end cell
+            dir = rand.nextInt(4) + 1; 
+            if (dir == 1) { // top border
+                x2 = rand.nextInt(CHOICE_REGION_AREA);      // [0,19]
+                y2 = rand.nextInt(WIDTH);                   // [0,159]
+                while (this.grid[x2][y2].getType() == 0) {  // if the choice is blocked, try another random location
+                    x2 = rand.nextInt(CHOICE_REGION_AREA);  // [0,19]
+                    y2 = rand.nextInt(WIDTH);               // [0,159]
+                }
+            } else if (dir == 2) { // right border
+                x2 = rand.nextInt(HEIGHT);                                  // [0,119]
+                y2 = (WIDTH - 1) - rand.nextInt(CHOICE_REGION_AREA);        // [140,159]
+                while (this.grid[x2][y2].getType() == 0) {                  // if the choice is blocked, try another random location
+                    x2 = rand.nextInt(120);                                 // [0,119]
+                    y2 = (WIDTH - 1) - rand.nextInt(CHOICE_REGION_AREA);    // [140,159]
+                }
+            } else if (dir == 3) { // bottom border
+                x2 = (HEIGHT - 1) - rand.nextInt(CHOICE_REGION_AREA);       // [100,119]
+                y2 = rand.nextInt(WIDTH);                                   // [0,159]
+                while (this.grid[x2][y2].getType() == 0) {                  // if the choice is blocked, try another random location
+                    x2 = (HEIGHT - 1) - rand.nextInt(CHOICE_REGION_AREA);   // [100,119]
+                    y2 = rand.nextInt(WIDTH);                               // [0,159]
+                }
+            } else { // left border
+                x2 = rand.nextInt(HEIGHT);                  // [0,119]
+                y2 = rand.nextInt(CHOICE_REGION_AREA);      // [0,19]
+                while (this.grid[x2][y2].getType() == 0) {  // if the choice is blocked, try another random location
+                    x2 = rand.nextInt(HEIGHT);              // [0,119]
+                    y2 = rand.nextInt(CHOICE_REGION_AREA);  // [0,19]
+                }
+            }
+            // get distance between start and end cells
+            dist = distBetween(x1, y1, x2, y2);
+        } // ends the while loop
+        startCell[0][0] = x1;
+        startCell[0][1] = y1;
+        endCell[0][0] = x2;
+        endCell[0][1] = y2;
+        System.out.println("start: (" + startCell[0][0] + " , " + startCell[0][1] + ")");
+        System.out.println("end: (" + endCell[0][0] + " , " + endCell[0][1] + ")");
+    } // ends the setStartAndEnd() method
+
+
+
+    /**
+     * This method will measure the distance between two points on the grid.
+     * @param x1 is the x-coordinate of the start point
+     * @param y1 is the y-coordinate of the start point
+     * @param x2 is the x-coordinate of the end point
+     * @param y2 is the y-coordinate of the end point
+     * @return an integer which represents the distance between the two points
+     */
+    private int distBetween(int x1, int y1, int x2, int y2) {
+        return (int)(Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1))));
+    } // ends the distBetween() method
 
     /**
      * This method will return the grid.
