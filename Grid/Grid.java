@@ -126,156 +126,66 @@ public class Grid {
         int dir = 0;
         if (curX == 0) { // Top Border
             dir = 3;
-            this.grid[curX][curY].changeHighwayDir(dir);
-            if (this.grid[curX][curY].getType() == 1) {
-                this.grid[curX][curY].changeType(3);
-            } else {
-                this.grid[curX][curY].changeType(4);
-            }
         } else if (curY == 159) { // Right Border
             dir = 4;
-            this.grid[curX][curY].changeHighwayDir(dir);
-            if (this.grid[curX][curY].getType() == 1) {
-                this.grid[curX][curY].changeType(3);
-            } else {
-                this.grid[curX][curY].changeType(4);
-            }
         } else if (curX == 119) { // Bottom Border
             dir = 1;
-            this.grid[curX][curY].changeHighwayDir(dir);
-            if (this.grid[curX][curY].getType() == 1) {
-                this.grid[curX][curY].changeType(3);
-            } else {
-                this.grid[curX][curY].changeType(4);
-            }
         } else { // Left Border
             dir = 2;
-            this.grid[curX][curY].changeHighwayDir(dir);
-            if (this.grid[curX][curY].getType() == 1) {
-                this.grid[curX][curY].changeType(3);
-            } else {
-                this.grid[curX][curY].changeType(4);
-            }
         }
 
         // create a structure to hold the current cell coordinates that are going to become highways
         LinkedList<int[]> list = new LinkedList<>();
-        int[] arr = new int[2];
-
-        arr[0] = curX;
-        arr[1] = curY;
-        list.add(arr);
-        ++highwayLen;
 
         // get direction, make highway in that direction for 20 cells and repeat until you hit a boundary or another highway
         while (true) {
             for (int i = 1; i <= STANDARD_HIGHWAY_PATH ; ++i) {
-                System.out.println("(" + curX + " , " + curY + " ) | " + dir);
-                if (dir == 3) { // South
-                    curX += 1;
-                    if (curX > 119) { // crossed bottom border
-                        if (highwayLen >= MIN_HIGHWAY_LENGTH) {
-                            return true;
-                        } else {
-                            resetCurrentHighway(list);
-                            return false;
-                        }
-                    } else {
-                        if (!this.grid[curX][curY].hasHighway()) {
-                            this.grid[curX][curY].changeHighwayDir(dir);
-                            if (this.grid[curX][curY].getType() == 1) {
-                                this.grid[curX][curY].changeType(3);
-                            } else {
-                                this.grid[curX][curY].changeType(4);
-                            }
-                            ++highwayLen;
-                            arr[0] = curX;
-                            arr[1] = curY;
-                            list.add(arr);
-                        } else {
-                            resetCurrentHighway(list);
-                            return false;
-                        }
+                if (isValidCell(curX, curY)) {
+                    if (this.grid[curX][curY].hasHighway()) {
+                        resetCurrentHighway(list);
+                        return false;
                     }
-                } else if (dir == 4) { // West
-                    curY -= 1;
-                    if (curY < 0) { // crossed left border
-                        if (highwayLen >= MIN_HIGHWAY_LENGTH) {
-                            return true;
-                        } else {
-                            resetCurrentHighway(list);
-                            return false;
-                        }
+                } else {
+                    if (highwayLen >= MIN_HIGHWAY_LENGTH) {
+                        return true;
                     } else {
-                        if (!this.grid[curX][curY].hasHighway()) {
-                            this.grid[curX][curY].changeHighwayDir(dir);
-                            if (this.grid[curX][curY].getType() == 1) {
-                                this.grid[curX][curY].changeType(3);
-                            } else {
-                                this.grid[curX][curY].changeType(4);
-                            }
-                            ++highwayLen;
-                            arr[0] = curX;
-                            arr[1] = curY;
-                            list.add(arr);
-                        } else {
-                            resetCurrentHighway(list);
-                            return false;
-                        }
-                    }
-                } else if (dir == 1) { // North
-                    curX -= 1;
-                    if (curX < 0) { // crossed top border
-                        if (highwayLen >= MIN_HIGHWAY_LENGTH) {
-                            return true;
-                        } else {
-                            resetCurrentHighway(list);
-                            return false;
-                        }
-                    } else {
-                        if (!this.grid[curX][curY].hasHighway()) {
-                            this.grid[curX][curY].changeHighwayDir(dir);
-                            if (this.grid[curX][curY].getType() == 1) {
-                                this.grid[curX][curY].changeType(3);
-                            } else {
-                                this.grid[curX][curY].changeType(4);
-                            }
-                            ++highwayLen;
-                            arr[0] = curX;
-                            arr[1] = curY;
-                            list.add(arr);
-                        } else {
-                            resetCurrentHighway(list);
-                            return false;
-                        }
-                    }
-                } else { // East
-                    curY += 1;
-                    if (curY > 159) { // crossed left border
-                        if (highwayLen >= MIN_HIGHWAY_LENGTH) {
-                            return true;
-                        } else {
-                            resetCurrentHighway(list);
-                            return false;
-                        }
-                    } else {
-                        if (!this.grid[curX][curY].hasHighway()) {
-                            this.grid[curX][curY].changeHighwayDir(dir);
-                            if (this.grid[curX][curY].getType() == 1) {
-                                this.grid[curX][curY].changeType(3);
-                            } else {
-                                this.grid[curX][curY].changeType(4);
-                            }
-                            ++highwayLen;
-                            arr[0] = curX;
-                            arr[1] = curY;
-                            list.add(arr);
-                        } else {
-                            resetCurrentHighway(list);
-                            return false;
-                        }
+                        resetCurrentHighway(list);
+                        return false;
                     }
                 }
+                
+                if (i < STANDARD_HIGHWAY_PATH) {
+                    this.grid[curX][curY].changeHighwayDir(dir);
+                        if (this.grid[curX][curY].getType() == 1) {
+                            this.grid[curX][curY].changeType(3);
+                        } else {
+                            this.grid[curX][curY].changeType(4);
+                        }
+                        ++highwayLen;
+                        int[] arr = new int[2];
+                        arr[0] = curX;
+                        arr[1] = curY;
+                        list.addLast(arr);
+                    
+                    if (dir == 3) {
+                        curX += 1;
+                    } else if (dir == 4) {
+                        curY -= 1;
+                    } else if (dir == 1) {
+                        curX -= 1;
+                    } else {
+                        curY += 1;
+                    }
+                } else {
+                    if (this.grid[curX][curY].getType() == 3) {
+                        this.grid[curX][curY].changeType(1);
+                        this.grid[curX][curY].changeHighwayDir(0);
+                    } else {
+                        this.grid[curX][curY].changeType(2);
+                        this.grid[curX][curY].changeHighwayDir(0);
+                    }
+                }
+
             }// ends the for-loop
 
             // now determine the new direction for the highway
@@ -302,6 +212,23 @@ public class Grid {
 
 
     /**
+     * This method will check if a set of coordinates is valid inside the grid.
+     * @param x is the x coordinate
+     * @param y is the y coordinate
+     * @return  true if the (x,y) coordinate is valid / in-bounds else returns false
+     */
+    private boolean isValidCell(int x, int y) {
+        if ((x < 0) || (x > 119)) {
+            return false;
+        }
+        if ((y < 0) || (y > 159)) {
+            return false;
+        }
+        return true;
+    } // ends the isValidCell() method
+
+
+    /**
      * This method will be used in order to reset the current highway.
      * @param list is the list of coordinates to go through and revert back to normal
      */
@@ -309,10 +236,10 @@ public class Grid {
         for (int[] arr : list) {
             if (this.grid[arr[0]][arr[1]].getType() == 3) {
                 this.grid[arr[0]][arr[1]].changeType(1);
-                this.grid[arr[0]][arr[1]].changeType(0);
+                this.grid[arr[0]][arr[1]].changeHighwayDir(0);
             } else {
                 this.grid[arr[0]][arr[1]].changeType(2);
-                this.grid[arr[0]][arr[1]].changeType(0);
+                this.grid[arr[0]][arr[1]].changeHighwayDir(0);
             }
         }
     } // ends the resetCurrentHighway() method
@@ -325,9 +252,11 @@ public class Grid {
             for (int j = 0 ; j < WIDTH ; ++j) {
                 if (this.grid[i][j].getType() == 3) {
                     this.grid[i][j].changeType(1);
+                    this.grid[i][j].changeHighwayDir(0);
                 }
                 if (this.grid[i][j].getType() == 4) {
                     this.grid[i][j].changeType(2);
+                    this.grid[i][j].changeHighwayDir(0);
                 }
             }
         }
