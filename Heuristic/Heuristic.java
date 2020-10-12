@@ -9,21 +9,20 @@ import SearchAlgos.Node;
 public abstract class Heuristic {
     
     // Global Variables
-    private Grid grid;  
-    private int end_x;
-    private int end_y;
+    private Grid grid;
 
     /**
      * This is the Heuristic constructor.
      * @param grid is the grid
-     * @param end_x is the x-coordinate of the end goal cell
-     * @param end_y is the y-coordinate of the end goal cell
      */
-    public Heuristic(Grid grid , int end_x , int end_y) {
+    public Heuristic(Grid grid) {
         this.grid = grid;
-        this.end_x = end_x;
-        this.end_y = end_y;
     } // ends the Heuristic() constructor
 
+    /**
+     * This method will get the heurisitc for a node.
+     * @param node the current node
+     * @return a float value that will be used as a heurisitic (represents distance to goal)
+     */
     public abstract float getHeuristic(Node node);
 } // ends the Heuristic() class

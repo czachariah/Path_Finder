@@ -439,7 +439,24 @@ public class Grid {
     } // ends the getGrid() method
 
 
+    /**
+     * This method will return the start Cell (goal) of the grid.
+     * @return the start Cell int double array [1][2]
+     */
+    public int[][] getStartCell() {
+        return startCell;
+    } // ends the getStartCell() method
 
+
+    /**
+     * This method will return the end Cell (goal) of the grid.
+     * @return the end Cell int double array [1][2]
+     */
+    public int[][] getEndCell() {
+        return endCell;
+    } // ends the getEndCell() method
+
+    
     /**
      * This method will print out the grid to Standard Output.
      * 0 => blocked
