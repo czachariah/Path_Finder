@@ -1,5 +1,7 @@
 import java.io.File;
 
+import Grid.Grid;
+
 public class test {
     public static void main(String[] args) {
         // buliding new grid (start + end + centers + highways + blocked + unblocked)
