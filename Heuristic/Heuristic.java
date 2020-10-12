@@ -11,7 +11,7 @@ public abstract class Heuristic {
     // Global Variables
     private Grid grid;  
     private int end_x;
-    private int end_y;3
+    private int end_y;
 
     /**
      * This is the Heuristic constructor.
