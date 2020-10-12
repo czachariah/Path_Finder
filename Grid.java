@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -52,14 +55,14 @@ public class Grid {
     /**
      * This method will be used in order to generate all the various types and points in the map.
      */
-    public void generateGrid() {
+    public void generateEntireGrid() {
         setHardCells();
         while (!setHighways()) {
             resetAllHighways();
         }
         setBlockedCells();
         setStartAndEnd();
-    } // ends the generateMap() 
+    } // ends the generateEntireGrid() 
 
 
 
@@ -467,5 +470,43 @@ public class Grid {
             System.out.println("(" + hardCellCenters[i][0] + " , " + hardCellCenters[i][1] + ")");
         }
     } // ends that printHardCenters() method
+
+
+    /**
+     * This method will save the contents of the grid to a txt file in the main directory.
+     * @param file is the file pointer to save the grid contents
+     */
+    public void saveGrid(File file) {
+        try {
+            PrintWriter writer = new PrintWriter(file,"UTF-8");
+            // write in the start and end cells
+            writer.println(this.startCell[0][0] + "," + this.startCell[0][1]);
+            writer.println(this.endCell[0][0] + "," + this.endCell[0][1]);
+
+            // write in the hard centers
+            for (int i = 0 ; i < NUMBER_HARD_CELL_CENTERS ; ++i) {
+                writer.println(this.hardCellCenters[i][0] + "," + this.hardCellCenters[i][1]);
+            }
+
+            // write in the grid
+            for (int i = 0 ; i < HEIGHT ; ++i) {
+                for (int j = 0 ; j < WIDTH ; ++j) {
+                    Cell cur = this.grid[i][j];
+                    if (cur.getType() == 3) {
+                        writer.print("a");
+                    } else if (cur.getType() == 4) {
+                        writer.print("b");
+                    } else {
+                        writer.print(cur.getType());
+                    }
+                }
+                writer.println();
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving the grid.");
+        }
+    } // ends the saveGrid() method
     
 } // ends the Grid class
