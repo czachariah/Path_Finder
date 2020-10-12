@@ -1,6 +1,9 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -474,7 +477,7 @@ public class Grid {
 
     /**
      * This method will save the contents of the grid to a txt file in the main directory.
-     * @param file is the file pointer to save the grid contents
+     * @param file is the file pointer to the txt file to save the grid contents to
      */
     public void saveGrid(File file) {
         try {
@@ -509,4 +512,61 @@ public class Grid {
         }
     } // ends the saveGrid() method
     
+
+    /**
+     * This method will import a new Grid from a txt file.
+     * @param file is the file pointer to the txt file with all the Grid contents to import from
+     */
+    public void importGrid(File file) {
+        try {
+            FileReader fileToRead = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fileToRead);
+            String line = reader.readLine();
+            int linesRead = 1;
+            while (line != null) {
+                if (linesRead <= NUMBER_HARD_CELL_CENTERS + 2) { // first 10 lines are the start and end cells + hard centers
+                    String[] coords = line.split(",");
+                    int x = Integer.parseInt(coords[0]);
+                    int y = Integer.parseInt(coords[1]);
+
+                    if (linesRead == 1) {
+                        this.startCell[0][0] = x;
+                        this.startCell[0][1] = y;
+                        ++linesRead;
+                    } else if (linesRead == 2) {
+                        this.endCell[0][0] = x;
+                        this.endCell[0][1] = y;
+                        ++linesRead;
+                    } else {
+                        this.hardCellCenters[linesRead - 3][0] = x;
+                        this.hardCellCenters[linesRead - 3][1] = y;
+                        ++linesRead;
+                    }
+                } else { // get the grid contents
+                    for (int i = 0 ; i < HEIGHT ; ++i) {
+                        for (int j = 0 ; j < WIDTH ; ++j) {
+                            Cell cur = this.grid[i][j];
+                            if (line.charAt(j) == '0') {
+                                cur.changeType(0);
+                            } else if (line.charAt(j) == '1') {
+                                cur.changeType(1);
+                            } else if (line.charAt(j) == '2') {
+                                cur.changeType(2);
+                            } else if (line.charAt(j) == 'a') {
+                                cur.changeType(3);
+                            } else {
+                                cur.changeType(4);
+                            }
+                        }
+                        line = reader.readLine();
+                    }
+                }
+                line = reader.readLine();
+            } // ends the while loop
+            reader.close();
+            fileToRead.close();
+        } catch (IOException e) {
+            System.out.println("Error importing grid.");
+        }
+    } // ends the importGrid() method
 } // ends the Grid class
