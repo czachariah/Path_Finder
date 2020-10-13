@@ -5,10 +5,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * This is the Grid class.
@@ -38,8 +39,8 @@ public class Grid {
     private Cell[][] grid;                                                      // main grid
     private int[][] hardCellCenters = new int[NUMBER_HARD_CELL_CENTERS][2];     // array of all the hard cell centers
     private Random rand = new Random();                                         // randomizer
-    private int[][] startCell = new int[1][2];                                  // location of the startCell
-    private int[][] endCell = new int[1][2];                                    // location of the endCell
+    public int[][] startCell = new int[1][2];                                  // location of the startCell
+    public int[][] endCell = new int[1][2];                                    // location of the endCell
 
 
     /**
@@ -65,6 +66,8 @@ public class Grid {
     		}
     	}
     }
+    
+   
 
 
 
@@ -479,7 +482,7 @@ public class Grid {
     public void printGrid() {
         System.out.println("Grid:");
         for (int i = 0 ; i < this.grid.length ; ++i) {
-            for (int j = 0 ; j < this.grid[0].length ; ++j) {
+            for (int j = 0 ; j < this.grid[i].length ; ++j) {
                 Cell cur = this.grid[i][j];
                 if (cur.getType() == 3) {
                     System.out.print("a");
@@ -602,6 +605,7 @@ public class Grid {
     
     public List<Cell> getNeighbors(Cell c){
     	List<Cell> neighbors = new LinkedList<>();
+    	Set<Cell> set = new HashSet<>();
     	for(int i = -1; i <= 1; i++){
     		for(int j = -1; j <= 1; j++){
     			if(i == 0 && j == 0)
@@ -609,8 +613,10 @@ public class Grid {
     			int x = c.getX() + i;
     			int y = c.getY() + j;
     			
-    			if(x >= 0 && x < HEIGHT && y >= 0 && y < WIDTH)
-    				neighbors.add(c);
+    			if(x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && !neighbors.contains(this.grid[x][y])) {
+    				neighbors.add(this.grid[x][y]);
+    				set.add(this.grid[x][y]);
+    			}
     		}
     	}
     	

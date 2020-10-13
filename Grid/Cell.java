@@ -20,6 +20,8 @@ public class Cell {
 	
 	//keep track of shortest path found
 	public Cell parent;
+	
+	public boolean visited = false;
 
 
     /**

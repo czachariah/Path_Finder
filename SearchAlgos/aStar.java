@@ -27,11 +27,11 @@ public class aStar {
 		Set<Cell> closed = new HashSet<>();
 		opened.add(cStart);
 		
-		
 		//can optimize by using a heap (as per the instructions)
 		//used a list for now because just trying to get a working algorithm first
 		while(opened.size() > 0) {
 			Cell curr = opened.get(0);
+			curr.visited = true;
 			for(int i = 1; i < opened.size(); i++) {
 				if(opened.get(i).getfCost() < curr.getfCost() || opened.get(i).getfCost() == curr.getfCost() && opened.get(i).gethCost() < curr.gethCost()) {
 					curr = opened.get(i);
@@ -39,8 +39,8 @@ public class aStar {
 			}
 			opened.remove(curr);
 			closed.add(curr);
-			if(curr.equals(cTarget)) {
-				path = printShortestPath(cStart, cTarget);
+			if(curr.getX() == cTarget.getX() && curr.getY() == cTarget.getY()){
+				path = printShortestPath(cStart, cTarget, path);
 				return;
 			}
 			
@@ -65,8 +65,7 @@ public class aStar {
 		
 	}
 	
-	public List<Cell> printShortestPath(Cell start, Cell target){
-		List<Cell> path = new LinkedList<>();
+	public List<Cell> printShortestPath(Cell start, Cell target, List<Cell> path){
 		Cell ptr = target;
 		while(ptr != start) {
 			path.add(ptr);

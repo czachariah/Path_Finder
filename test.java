@@ -14,16 +14,11 @@ public class test {
         test.printHardCenters();
         test.printGrid();
         
-        
-        Grid temp = new Grid(5, 5);
-
-        temp.printGrid();
         aStar a = new aStar();
         List<Cell> path = new LinkedList<>();
-        a.findPath(temp, path);
-        
+        a.findPath(test, path);        
         for(int i = 0; i < path.size(); i++) {
-        	System.out.println("path: " + path.get(i));
+        	System.out.println("path: " + path.get(i).getX() + " , " + path.get(i).getY());
         }
 
 
@@ -33,8 +28,8 @@ public class test {
 
         // importing a new Grid from a file that has all the Grid contents
         Grid test2 = new Grid();    // new Grid (will be empty)
-        test2.importGrid(file);     // file that holds other Grid contents to copy over
-        test2.printHardCenters(); 
-        test2.printGrid();
+        //test2.importGrid(file);     // file that holds other Grid contents to copy over
+        //test2.printHardCenters(); 
+        //test2.printGrid();
     }    
 }
