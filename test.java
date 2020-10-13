@@ -12,13 +12,25 @@ public class test {
         Grid test = new Grid();
         test.generateEntireGrid();
         test.printHardCenters();
-        test.printGrid();
+        //test.printGrid();
         
+        
+        Grid temp = new Grid(10, 10);
+        temp.endCell[0][0] = 2;
+        temp.endCell[0][1] = 1;
         aStar a = new aStar();
         List<Cell> path = new LinkedList<>();
         a.findPath(test, path);        
-        for(int i = 0; i < path.size(); i++) {
-        	System.out.println("path: " + path.get(i).getX() + " , " + path.get(i).getY());
+        
+        for(int i = 0; i < test.getGrid().length; i++) {
+        	for(int j = 0; j < test.getGrid()[0].length; j++) {
+        		if(path.contains(test.getGrid()[i][j]))
+        			System.out.print("*");
+        		else
+        			System.out.print("1");
+        		
+        	}
+        	System.out.println();
         }
 
 
