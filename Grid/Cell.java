@@ -12,11 +12,14 @@ public class Cell {
     private int type;                // this value represents the type of the variable
     private int highwayDir;          // this value indicates what direction the highway flows
     
-	//gCost -> distance from starting node
-	//hCost -> distance from target node
+	//gCost -> distance from starting cell
+	//hCost -> distance from target cell
 	//fCost = gCost + hCost
 	private float gCost;
 	private float hCost;
+	
+	//keep track of shortest path found
+	public Cell parent;
 
 
     /**
@@ -132,6 +135,14 @@ public class Cell {
 	
 	public float gethCost() {
 		return this.hCost;
+	}
+	
+	public void setgCost(float g) {
+		this.gCost = g;
+	}
+	
+	public void sethCost(float h) {
+		this.hCost = h;
 	}
 
 } // ends the Cell class

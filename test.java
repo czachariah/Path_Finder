@@ -1,6 +1,10 @@
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 import Grid.Grid;
+import Grid.Cell;
+import SearchAlgos.aStar;
 
 public class test {
     public static void main(String[] args) {
@@ -9,6 +13,19 @@ public class test {
         test.generateEntireGrid();
         test.printHardCenters();
         test.printGrid();
+        
+        
+        Grid temp = new Grid(5, 5);
+
+        temp.printGrid();
+        aStar a = new aStar();
+        List<Cell> path = new LinkedList<>();
+        a.findPath(temp, path);
+        
+        for(int i = 0; i < path.size(); i++) {
+        	System.out.println("path: " + path.get(i));
+        }
+
 
         // saving a grid (that has been fully built with everything) into a file in the current directory
         File file = new File("./testGridSave.txt");

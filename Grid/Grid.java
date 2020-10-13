@@ -55,6 +55,16 @@ public class Grid {
             }
         }
     } // ends the Grid() constructor
+    
+    //other constructor to test smaller size grids
+    public Grid(int x, int y) {
+    	this.grid = new Cell[x][y];
+    	for(int i = 0; i < x; i++) {
+    		for(int j = 0; j < y; j++) {
+    			this.grid[i][j] = new Cell(i, j, 1, 0);
+    		}
+    	}
+    }
 
 
 
@@ -468,8 +478,8 @@ public class Grid {
      */
     public void printGrid() {
         System.out.println("Grid:");
-        for (int i = 0 ; i < HEIGHT ; ++i) {
-            for (int j = 0 ; j < WIDTH ; ++j) {
+        for (int i = 0 ; i < this.grid.length ; ++i) {
+            for (int j = 0 ; j < this.grid[0].length ; ++j) {
                 Cell cur = this.grid[i][j];
                 if (cur.getType() == 3) {
                     System.out.print("a");
