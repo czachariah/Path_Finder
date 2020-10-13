@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -588,4 +589,22 @@ public class Grid {
             System.out.println("Error importing grid.");
         }
     } // ends the importGrid() method
+    
+    public List<Cell> getNeighbors(Cell c){
+    	List<Cell> neighbors = new LinkedList<>();
+    	for(int i = -1; i <= 1; i++){
+    		for(int j = -1; j <= 1; j++){
+    			if(i == 0 && j == 0)
+    				continue;
+    			int x = c.getX() + i;
+    			int y = c.getY() + j;
+    			
+    			if(x >= 0 && x < HEIGHT && y >= 0 && y < WIDTH)
+    				neighbors.add(c);
+    		}
+    	}
+    	
+    	return neighbors;
+    }
+    
 } // ends the Grid class

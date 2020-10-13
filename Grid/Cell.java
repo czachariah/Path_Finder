@@ -11,6 +11,12 @@ public class Cell {
     private int x,y;                 // these two values represent the (x,y) coordinates of the current cell
     private int type;                // this value represents the type of the variable
     private int highwayDir;          // this value indicates what direction the highway flows
+    
+	//gCost -> distance from starting node
+	//hCost -> distance from target node
+	//fCost = gCost + hCost
+	private float gCost;
+	private float hCost;
 
 
     /**
@@ -25,6 +31,8 @@ public class Cell {
         this.y = y;
         this.type = type;
         this.highwayDir = highwayDir;
+        this.gCost = 0;
+        this.hCost = 0;
     } // ends the Cell() constructor
 
 
@@ -97,5 +105,33 @@ public class Cell {
     public void changeHighwayDir(int dir) {
         this.highwayDir = dir;
     } // ends the changeHighDir() method
+    
+    public boolean equals(Object o) {
+    	if(!(o instanceof Cell))
+    		return false;
+    	Cell cell = (Cell) o;
+  
+    	return this.x == cell.x && this.y == cell.y;
+    }
+    
+    public int getX() {
+    	return this.x;
+    }
+    
+    public int getY() {
+    	return this.y;
+    }
+    
+	public float getfCost() {
+		return this.gCost + this.hCost;
+	}
+	
+	public float getgCost() {
+		return this.gCost;
+	}
+	
+	public float gethCost() {
+		return this.hCost;
+	}
 
 } // ends the Cell class
