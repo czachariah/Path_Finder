@@ -67,9 +67,6 @@ public class Grid {
     	}
     }
     
-   
-
-
 
     /**
      * This method will be used in order to generate all the various types and points in the map.
@@ -603,6 +600,7 @@ public class Grid {
         }
     } // ends the importGrid() method
     
+
     public List<Cell> getNeighbors(Cell c){
     	List<Cell> neighbors = new LinkedList<>();
     	Set<Cell> set = new HashSet<>();

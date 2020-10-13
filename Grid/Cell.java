@@ -3,8 +3,6 @@ package Grid;
 /**
  * This is the Cell class. This will be used in order to construct the Grid.
  * Each Cell has its own unique properties.
- * 
- * @author Chris Zachariah
  */
 public class Cell {
     // Global variables

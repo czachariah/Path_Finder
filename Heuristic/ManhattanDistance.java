@@ -1,9 +1,11 @@
 package Heuristic;
 
 import Grid.Grid;
-import SearchAlgos.Node;
+import Grid.Cell;
+
 
 public class ManhattanDistance extends Heuristic {
+    
     // Global Variables
     private Grid grid;
     private int end_x;
@@ -22,10 +24,10 @@ public class ManhattanDistance extends Heuristic {
 
     /**
      * This method will get the Manhattan Distance heurisitc for a node.
-     * @param node the current node
+     * @param cell the current cell
      * @return a float value that will be used as a heurisitic (represents distance to goal) found using the Manhattan Distance
      */
-    public float getHeuristic(Node node) {
-        return 0f;
+    public float getHeuristic(Cell cell) {
+        return (float) Math.abs(cell.getX()-end_x) + Math.abs(cell.getY()-end_y);
     }
 } // ends the ManhattanDistance() class
