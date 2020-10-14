@@ -21,9 +21,9 @@ public class EuclideanDistance extends Heuristic{
 
 
     /**
-     * This method will get the EuclideanDistance heurisitc for a node.
+     * This method will get the Euclidean Distance heurisitc for a node.
      * @param cell the current cell
-     * @return a float value that will be used as a heurisitic (represents distance to goal) found using the EuclideanDistance
+     * @return a float value that will be used as a heurisitic (represents distance to goal) found using the Euclidean Distance
      */
     public float getHeuristic(Cell cell) {
         return (float)(Math.sqrt(((end_x-cell.getX())*(end_x-cell.getX())) + ((end_y-cell.getY())*(end_y-cell.getY()))));
