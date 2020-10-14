@@ -10,7 +10,7 @@ public class test {
     public static void main(String[] args) {
         // buliding new grid (start + end + centers + highways + blocked + unblocked)
         Grid test = new Grid();
-        //test.generateEntireGrid();
+        test.generateEntireGrid();
         //test.printHardCenters();
         //test.printGrid();
         
