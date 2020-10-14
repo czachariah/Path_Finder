@@ -611,13 +611,12 @@ public class Grid {
     			int x = c.getX() + i;
     			int y = c.getY() + j;
     			
-    			if(x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && !neighbors.contains(this.grid[x][y])) {
+    			if(x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && !set.contains(this.grid[x][y])) {
     				neighbors.add(this.grid[x][y]);
     				set.add(this.grid[x][y]);
     			}
     		}
     	}
-    	
     	return neighbors;
     }
     
