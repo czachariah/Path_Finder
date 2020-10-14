@@ -600,24 +600,4 @@ public class Grid {
         }
     } // ends the importGrid() method
     
-
-    public List<Cell> getNeighbors(Cell c){
-    	List<Cell> neighbors = new LinkedList<>();
-    	Set<Cell> set = new HashSet<>();
-    	for(int i = -1; i <= 1; i++){
-    		for(int j = -1; j <= 1; j++){
-    			if(i == 0 && j == 0)
-    				continue;
-    			int x = c.getX() + i;
-    			int y = c.getY() + j;
-    			
-    			if(x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && !set.contains(this.grid[x][y])) {
-    				neighbors.add(this.grid[x][y]);
-    				set.add(this.grid[x][y]);
-    			}
-    		}
-    	}
-    	return neighbors;
-    }
-    
 } // ends the Grid class

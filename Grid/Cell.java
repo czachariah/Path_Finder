@@ -143,6 +143,13 @@ public class Cell {
 	
 	public void sethCost(float h) {
 		this.hCost = h;
-	}
+    }
+    
+    // -#   -> one < two
+    // 0    -> one == two
+    // +#    -> one > two 
+    public int compareTo(Cell one , Cell two) {
+        return Float.compare(one.getgCost() + one.getfCost(), two.getgCost() + two.getfCost());
+    }
 
 } // ends the Cell class

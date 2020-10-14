@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import Grid.Grid;
+import Heuristic.EuclideanDistance;
 import Grid.Cell;
 import SearchAlgos.aStar;
 
@@ -18,9 +19,10 @@ public class test {
         Grid temp = new Grid(10, 10);
         temp.endCell[0][0] = 2;
         temp.endCell[0][1] = 1;
-        aStar a = new aStar();
-        List<Cell> path = new LinkedList<>();
-        a.findPath(test, path);        
+        EuclideanDistance heu = new EuclideanDistance(test);
+        aStar a = new aStar(test,heu);
+        a.run();
+        List<Cell> path = a.getPath();      
         
         for(int i = 0; i < test.getGrid().length; i++) {
         	for(int j = 0; j < test.getGrid()[0].length; j++) {
