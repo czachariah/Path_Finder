@@ -78,7 +78,7 @@ public abstract class AbstractSearch {
             // 0    -> one == two
             // +#   -> one > two 
             public int compare(Cell one, Cell two) {
-                return Float.compare(one.getgCost() + one.gethCost(), two.getgCost() + two.gethCost());
+                return Float.compare(one.getfCost(), two.getfCost());
             }
         });
 
@@ -226,19 +226,19 @@ public abstract class AbstractSearch {
         
         // add the start to the fringe
         addToFringe(cStart, null, getGCost(cStart,cStart), getHCost(cStart)); // parent = null
-
+        //System.out.println(cStart.getfCost() + " = " + cStart.getgCost() + " + " + cStart.gethCost());
         // some info about how many cells the algo has to go through to get from start to end
         int numNodesSearched = 0;
 		while(fringe.size() > 0) {
             numNodesSearched++;
             // take the head of the queue (should be minimum fcost by defualt becuase of the heap/priority queue)
-            Cell curr = fringe.remove();
+            Cell curr = fringe.poll();
             curr.visited = true;
             exploredCells.add(curr);
 
             // check if it is the goal Cell
 			if(curr.getX() == cTarget.getX() && curr.getY() == cTarget.getY()){
-                path = getShortestPath(cStart, cTarget, path);
+                path = getShortestPath(cStart, cTarget);
                 System.out.println("Number of Nodes Looked Through: " + numNodesSearched);
 				return;
 			}
@@ -246,16 +246,20 @@ public abstract class AbstractSearch {
             // get neighbors and check if has been visited or not
 			List<Cell> neighbors = getNeighbors(curr);
 			for(Cell c : neighbors) {
-				if(c.getType() == 0 || exploredCells.contains(c)) {
+				if(c.getType() == 0) {
                     continue;
                 }	
                 float gCostCurrToNeighbor = curr.getgCost() + getGCost(curr, c);
-				if(gCostCurrToNeighbor < c.getgCost() || !fringe.contains(c)) {			
-					if(!fringe.contains(c)) {
-                        addToFringe(c, curr, getGCost(curr, c), getHCost(c));
-                    }
-				}
-			}
+                if (!exploredCells.contains(c)) {
+                    if (!fringe.contains(c)) {
+                        addToFringe(c, curr, gCostCurrToNeighbor, getHCost(c));
+                    } else {
+                        if (gCostCurrToNeighbor <= c.getgCost()) {
+                            addToFringe(c, curr, gCostCurrToNeighbor, getHCost(c));
+                        }
+                    } 
+                }
+            }
         } // ends the while loop
 
         // if the algorithm gets here, that means that there is no route from the start to the goal
@@ -271,13 +275,14 @@ public abstract class AbstractSearch {
      * @param path the list that will take the contents of the path
      * @return the path that was generated
      */
-    public List<Cell> getShortestPath(Cell start, Cell target, List<Cell> path){
-		Cell ptr = target;
+    public List<Cell> getShortestPath(Cell start, Cell target){
+        List<Cell> finalPath = new LinkedList<>();
+        Cell ptr = target;
 		while(ptr != null) { // will go backwards in the path to start whose parent would be null
-			path.add(ptr);
+			finalPath.add(0,ptr);
 			ptr = ptr.parent;
 		}
-		return path;
+		return finalPath;
 	} // ends the getShortestPath() method
     
     
@@ -293,14 +298,16 @@ public abstract class AbstractSearch {
     public void addToFringe(Cell cur , Cell parent , float gcost , float hcost) {
         cur.setgCost(gcost);
         cur.sethCost(hcost);
+        cur.setfCost(cur.getgCost() + cur.gethCost());
         cur.parent = parent;
-        
+        cur.visited = true;
+
         if (fringe.contains(cur)){
             fringe.remove(cur);
         }
         fringe.add(cur);
         exploredCells.add(cur);
-        cur.visited = true;
+        
     } // ends the addToFringe() method 
 
     
@@ -331,3 +338,21 @@ public abstract class AbstractSearch {
 
 
 } // ends the AbstractSearch class
+
+/*
+// my version 
+if(gCostCurrToNeighbor <= c.getgCost() || !fringe.contains(c)) {			
+					if(!fringe.contains(c)) {
+                        addToFringe(c, curr, getGCost(curr, c), getHCost(c));
+                    } else {
+                        addToFringe(c, curr, getGCost(curr, c), getHCost(c));
+                    }
+                }
+                
+                // before
+                if(gCostCurrToNeighbor < c.getgCost() || !fringe.contains(c)) {			
+					if(!fringe.contains(c)) {
+                        addToFringe(c, curr, getGCost(curr, c), getHCost(c));
+                    }
+				}
+*/

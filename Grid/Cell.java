@@ -11,7 +11,8 @@ public class Cell {
     private int highwayDir;          // this value indicates what direction the highway flows
     
 	private float gCost;        // distance from the starting Cell to the current Cell
-	private float hCost;        // distance from the current cell to the end/goal Cell
+    private float hCost;        // distance from the current cell to the end/goal Cell
+    private float fCost;        // fCost + hCost
 	
 	public Cell parent;         // this is the parent of the Cell, this will be used to keep track of the shortest path
 	public boolean visited;     // know if the Cell has been visited or not
@@ -123,6 +124,10 @@ public class Cell {
     
     public int getY() {
     	return this.y;
+    }
+
+    public void setfCost(float f) {
+        this.fCost = f;
     }
     
 	public float getfCost() {
