@@ -3,7 +3,9 @@ package Heuristic;
 import Grid.Grid;
 import Grid.Cell;
 
-
+/**
+ * This is the (Manhattan Distance / 4) Heuristic Class.
+ */
 public class ManhattanDistanceByFour extends Heuristic {
     @SuppressWarnings("unused")
     // Global Variables

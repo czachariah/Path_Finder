@@ -1,7 +1,6 @@
 package SearchAlgos;
 
 import Grid.Grid;
-//import sun.jvm.hotspot.utilities.ConstIterator;
 import Grid.Cell;
 
 import java.util.Comparator;
@@ -63,7 +62,10 @@ public abstract class AbstractSearch {
 	};
 
 
-    // constructor
+    /**
+     * This is the constructor the AbstractSearch Class.
+     * @param curGrid is the grid to be searched
+     */
     public AbstractSearch(Grid curGrid) {
         this.grid = curGrid.getGrid();
         this.start = curGrid.getStartCell();
@@ -76,7 +78,7 @@ public abstract class AbstractSearch {
             // 0    -> one == two
             // +#   -> one > two 
             public int compare(Cell one, Cell two) {
-                return Float.compare(one.getgCost() + one.getfCost(), two.getgCost() + two.getfCost());
+                return Float.compare(one.getgCost() + one.gethCost(), two.getgCost() + two.gethCost());
             }
         });
 
@@ -84,19 +86,39 @@ public abstract class AbstractSearch {
 
 
 
-    // method to find the HCost (other classes will Override)
+    /**
+     * This method is used to find the HCost for a specific Cell.
+     * @param cell the cell that will be used in order to find the hCost
+     * @return the hCost
+     */
     public float getHCost(Cell cell) {
         return 0f;
     } // ends the getHCost() method
 
+    /**
+     * This method will return the path that had been constructed by the algorithm.
+     * @return the path
+     */
     public List<Cell> getPath() {
         return path;
     }
 
+    /**
+     * This method will return a Set of all the Cells that have been explored by the algorithm.
+     * @return the set of explored cells
+     */
     public Set<Cell> getExploredCells() {
         return exploredCells;
     }
 
+
+
+    /**
+     * This method will be used in order to get the gCost of the current Cell its neighbor
+     * @param cur the current cell
+     * @param next the neighboring cell
+     * @return the gCost between the two cells
+     */
     public float getGCost(Cell cur , Cell next) {
         if ((cur.getX() == next.getX()) && (cur.getY() == next.getY())) { // same cell
             return 0f;
@@ -108,8 +130,15 @@ public abstract class AbstractSearch {
         } else {
             return -1f;
         }
-    }
+    } // ends the getGCost() method
 
+
+    /**
+     * This method is used to get the gCost from two neighboring Cells that are horizontal or verticle from each other.
+     * @param from the current cell
+     * @param to the neighboring cell
+     * @return the gCost
+     */
     public float costHorVert(Cell from, Cell to) {
         int type_from = from.getType();
         int type_to = to.getType();
@@ -142,8 +171,15 @@ public abstract class AbstractSearch {
         }
 
         return HORIZONAL_VERTICAL_COST[type_from][type_to];
-    }
+    } // ends the costHorVert() method
 
+
+    /**
+     * This method is used in order to get the gCost between two neighboring cells that are diagonal from each other.
+     * @param from the current cell
+     * @param to the neighboring cell
+     * @return the gCost
+     */
     public float costDiag(Cell from, Cell to) {
         int type_from = from.getType();
         int type_to = to.getType();
@@ -176,9 +212,13 @@ public abstract class AbstractSearch {
         }
 
         return DIAGONAL_COSTS[type_from][type_to];
-    }
+    }// ends the costDiag() method 
 
-    // method to run the algo
+
+
+    /**
+     * The main method that runs the base A* algorithm. 
+     */
     public void run() {        
         // get the start and end
         Cell cStart = grid[start[0][0]][start[0][1]];
@@ -187,10 +227,11 @@ public abstract class AbstractSearch {
         // add the start to the fringe
         addToFringe(cStart, null, getGCost(cStart,cStart), getHCost(cStart)); // parent = null
 
+        // some info about how many cells the algo has to go through to get from start to end
         int numNodesSearched = 0;
 		while(fringe.size() > 0) {
             numNodesSearched++;
-            // take the head of the queue (should be minimum fcost by defualt)
+            // take the head of the queue (should be minimum fcost by defualt becuase of the heap/priority queue)
             Cell curr = fringe.remove();
             curr.visited = true;
             exploredCells.add(curr);
@@ -202,7 +243,7 @@ public abstract class AbstractSearch {
 				return;
 			}
             
-            // get neighbors and check 
+            // get neighbors and check if has been visited or not
 			List<Cell> neighbors = getNeighbors(curr);
 			for(Cell c : neighbors) {
 				if(c.getType() == 0 || exploredCells.contains(c)) {
@@ -223,7 +264,13 @@ public abstract class AbstractSearch {
     } // ends the run() method
 
 
-    // call this method once the goal has been reached in order to get the full path from start to end
+    /**
+     * This method is used in order to obtain the shortest path that has been built by the algorithm.
+     * @param start the starting Cell
+     * @param target the ending Cell
+     * @param path the list that will take the contents of the path
+     * @return the path that was generated
+     */
     public List<Cell> getShortestPath(Cell start, Cell target, List<Cell> path){
 		Cell ptr = target;
 		while(ptr != null) { // will go backwards in the path to start whose parent would be null
@@ -231,11 +278,18 @@ public abstract class AbstractSearch {
 			ptr = ptr.parent;
 		}
 		return path;
-	}
+	} // ends the getShortestPath() method
     
     
  
     // method used to add new cells to the fringe
+    /**
+     * This method will be used to add new Cells to the fringe for the algorithm.
+     * @param cur the current cell
+     * @param parent the parent of the cell
+     * @param gcost the gCost of the cell
+     * @param hcost the hCost of the cell
+     */
     public void addToFringe(Cell cur , Cell parent , float gcost , float hcost) {
         cur.setgCost(gcost);
         cur.sethCost(hcost);
@@ -247,11 +301,15 @@ public abstract class AbstractSearch {
         fringe.add(cur);
         exploredCells.add(cur);
         cur.visited = true;
-
-    }
+    } // ends the addToFringe() method 
 
     
     // this method returns a list of the neighbors of the Cell
+    /**
+     * This method will get the neighbors of the current cell.
+     * @param c is the current cell
+     * @return a list of all the neighbors of the current cell
+     */
     public List<Cell> getNeighbors(Cell c){
     	List<Cell> neighbors = new LinkedList<>();
     	Set<Cell> set = new HashSet<>();    // use thid for O(1) search
@@ -263,44 +321,13 @@ public abstract class AbstractSearch {
     			int y = c.getY() + j;
     			
     			if(x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && !set.contains(this.grid[x][y])) {
-                    //this.grid[x][y].parent = c;
                     neighbors.add(this.grid[x][y]);
     				set.add(this.grid[x][y]);
     			}
     		}
     	}
     	return neighbors;
-    }
+    } // ends the getNeighbors() method
 
 
 } // ends the AbstractSearch class
-
-/**
- * // look through and find the smallest fcost
-            Cell[] arr = new Cell[fringe.size()];
-            fringe.toArray(arr);
-            for(int i = 0; i < arr.length; i++) {
-				if(arr[i].getfCost() < curr.getfCost() || fringe.get(i).getfCost() == curr.getfCost() && fringe.get(i).gethCost() < curr.gethCost()) {
-					curr = fringe.get(i);
-				}
-			}
-            fringe.remove(curr);
-            
-
-
-    /**
-	 * 
-	 * Still a little confused about heuristics, but I believe the getDistance method is the only method we
-	 * will need to change. Logic should stay the same for a*
-	 * 
-	 * sqrt(8) represents the distance to travel diagonally across a cell
-	 * 2 represents the distance to travel horizontally or vertically across a cell
-	 *
-	public float getDistance(Cell a, Cell b) {
-		float distX = Math.abs(a.getX() - b.getX());
-		float distY = Math.abs(a.getY() - b.getY());
-		
-		return distX > distY ? (float)Math.sqrt(8) * distY + 2 * (distX - distY) : (float)Math.sqrt(8) * distX + 2 * (distY - distX);
-    }
-   
- */

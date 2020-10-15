@@ -1,10 +1,8 @@
 package Grid;
 
-//import java.util.Comparator;
-
 /**
  * This is the Cell class. This will be used in order to construct the Grid.
- * Each Cell has its own unique properties.
+ * Each Cell has its own unique properties which will help for each of the different searches.
  */
 public class Cell {
     // Global variables
@@ -12,16 +10,11 @@ public class Cell {
     private int type;                // this value represents the type of the variable
     private int highwayDir;          // this value indicates what direction the highway flows
     
-	//gCost -> distance from starting cell
-	//hCost -> distance from target cell
-	//fCost = gCost + hCost
-	private float gCost;
-	private float hCost;
+	private float gCost;        // distance from the starting Cell to the current Cell
+	private float hCost;        // distance from the current cell to the end/goal Cell
 	
-	//keep track of shortest path found
-	public Cell parent = null;
-	
-	public boolean visited = false;
+	public Cell parent;         // this is the parent of the Cell, this will be used to keep track of the shortest path
+	public boolean visited;     // know if the Cell has been visited or not
 
 
     /**
@@ -38,6 +31,8 @@ public class Cell {
         this.highwayDir = highwayDir;
         this.gCost = 0;
         this.hCost = 0;
+        this.parent = null;
+        this.visited = false;
     } // ends the Cell() constructor
 
 
@@ -111,6 +106,7 @@ public class Cell {
         this.highwayDir = dir;
     } // ends the changeHighDir() method
     
+
     public boolean equals(Object o) {
     	if(!(o instanceof Cell))
     		return false;
@@ -118,6 +114,8 @@ public class Cell {
   
     	return this.x == cell.x && this.y == cell.y;
     }
+
+    // ******************** GETTER & SETTER METHODS ************************* //
     
     public int getX() {
     	return this.x;
@@ -146,6 +144,5 @@ public class Cell {
 	public void sethCost(float h) {
 		this.hCost = h;
     }
-
 
 } // ends the Cell class

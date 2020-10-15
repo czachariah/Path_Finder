@@ -3,12 +3,17 @@ package Heuristic;
 import Grid.Grid;
 import Grid.Cell;
 
+/**
+ * This is the Chebyshev Distance Heuristic class.
+ */
 public class Chebyshev extends Heuristic {
     @SuppressWarnings("unused")
     // Global Variables
     private Grid grid;
     private int end_x;
     private int end_y;
+    
+    
     /**
      * This is the constructor of the Chebyshev() class.
      * @param grid the grid

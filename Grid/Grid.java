@@ -5,16 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-//import java.util.HashSet;
 import java.util.LinkedList;
-//import java.util.List;
 import java.util.Random;
-//import java.util.Set;
 
 /**
  * This is the Grid class.
  * This class can be used in order to create the grid of cells and construct the map.
- * @author Chris Zachariah
  */
 public class Grid {
     /* Global varibales*/
@@ -39,8 +35,8 @@ public class Grid {
     private Cell[][] grid;                                                      // main grid
     private int[][] hardCellCenters = new int[NUMBER_HARD_CELL_CENTERS][2];     // array of all the hard cell centers
     private Random rand = new Random();                                         // randomizer
-    public int[][] startCell = new int[1][2];                                  // location of the startCell
-    public int[][] endCell = new int[1][2];                                    // location of the endCell
+    public int[][] startCell = new int[1][2];                                   // location of the startCell
+    public int[][] endCell = new int[1][2];                                     // location of the endCell
 
 
     /**
@@ -57,6 +53,9 @@ public class Grid {
         }
     } // ends the Grid() constructor
     
+
+
+
     //other constructor to test smaller size grids
     public Grid(int x, int y) {
     	this.grid = new Cell[x][y];
@@ -67,6 +66,8 @@ public class Grid {
     	}
     }
     
+
+
 
     /**
      * This method will be used in order to generate all the various types and points in the map.
@@ -79,6 +80,8 @@ public class Grid {
         setBlockedCells();
         setStartAndEnd();
     } // ends the generateEntireGrid() 
+
+
 
 
 
@@ -120,6 +123,8 @@ public class Grid {
 
 
 
+
+
     /**
      * This method will set the highways on the grid.
      * @return true if the highways have been created and false otherwise
@@ -138,21 +143,15 @@ public class Grid {
     } // ends the 
 
 
+
+
     /**
      * This method will be used in order to create the highway.
      * @return true if the highway is successfully created and false otherwise.
      */
     private boolean createHighway() {
         int highwayLen = 0;
-        //int tries = 1;
         int[] startPoint = getBoundaryPoint();  // start point for the highway
-        //while (tries <= 10 || startPoint[0] == -1 || startPoint[1] == -1) {
-          //  startPoint = getBoundaryPoint();  // start point for the highway
-            //++tries;
-        //}
-        //if (tries > 10) {
-          //  return false;
-        //}
         int curX = startPoint[0];
         int curY = startPoint[1];
 
@@ -239,6 +238,8 @@ public class Grid {
     } // ends the createHighway() method
 
 
+
+
     /**
      * This method will check if a set of coordinates is valid inside the grid.
      * @param x is the x coordinate
@@ -254,6 +255,8 @@ public class Grid {
         }
         return true;
     } // ends the isValidCell() method
+
+
 
 
 
@@ -273,6 +276,8 @@ public class Grid {
         }
     } // ends the resetCurrentHighway() method
     
+
+
 
 
     /**
@@ -295,6 +300,8 @@ public class Grid {
 
 
 
+
+
     /**
      * This method will choose a random boundary and a starting point.
      * @return an int[2] array which will be the starting point for the highway.
@@ -307,12 +314,10 @@ public class Grid {
             point[1] = rand.nextInt(WIDTH); // [0,159];
             int num = 0;
             while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
-                //System.out.println("top border BAD");
 				point[0] = 0; 
                 point[1] = rand.nextInt(WIDTH); // [0,159];
                 ++num;
-                if (num == 30) {
-                    //printGrid();
+                if (num == 30) { // In the case that the border is taken over by a highway and this goes into an infinite loop.
                     point[0] = -1; 
                     point[1] = -1;
                     return point;
@@ -324,12 +329,10 @@ public class Grid {
             point[1] = WIDTH-1; 
             int num = 0;
 			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
-                //System.out.println("right border bad");
                 point[0] = rand.nextInt(HEIGHT); // [0,119]
                 point[1] = WIDTH-1;
                 ++num;
-                if (num == 30) {
-                    //printGrid();
+                if (num == 30) { // In the case that the border is taken over by a highway and this goes into an infinite loop.
                     point[0] = -1; 
                     point[1] = -1;
                     return point;
@@ -341,12 +344,10 @@ public class Grid {
             point[1] = rand.nextInt(WIDTH); // [0,159]
             int num = 0;
 			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
-                //System.out.println("bottom border bad");
                 point[0] = HEIGHT-1;
                 point[1] = rand.nextInt(WIDTH); // [0,159]
                 ++num;
-                if (num == 30) {
-                    //printGrid();
+                if (num == 30) { // In the case that the border is taken over by a highway and this goes into an infinite loop.
                     point[0] = -1; 
                     point[1] = -1;
                     return point;
@@ -358,12 +359,10 @@ public class Grid {
             point[1] = 0; 
             int num = 0;
 			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
-                //System.out.println("left border bad");
                 point[0] = rand.nextInt(HEIGHT); // [0,119]
                 point[1] = 0; 
                 ++num;
-                if (num == 30) {
-                    //printGrid();
+                if (num == 30) { // In the case that the border is taken over by a highway and this goes into an infinite loop.
                     point[0] = -1; 
                     point[1] = -1;
                     return point;
@@ -372,6 +371,8 @@ public class Grid {
 			return point;
         }
     } // ends getBoundaryPoint() method
+
+
 
 
 
@@ -390,6 +391,7 @@ public class Grid {
             }
         }
     } // ends the setBlockedCells() method  
+
 
 
 
@@ -477,6 +479,7 @@ public class Grid {
 
 
 
+
     /**
      * This method will measure the distance between two points on the grid.
      * @param x1 is the x-coordinate of the start point
@@ -489,6 +492,8 @@ public class Grid {
         return (int)(Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1))));
     } // ends the distBetween() method
 
+
+
     /**
      * This method will return the grid.
      * @return the Cell grid
@@ -496,6 +501,8 @@ public class Grid {
     public Cell[][] getGrid() {
         return this.grid;
     } // ends the getGrid() method
+
+
 
 
     /**
@@ -507,6 +514,8 @@ public class Grid {
     } // ends the getStartCell() method
 
 
+
+
     /**
      * This method will return the end Cell (goal) of the grid.
      * @return the end Cell int double array [1][2]
@@ -516,6 +525,8 @@ public class Grid {
     } // ends the getEndCell() method
 
     
+
+
     /**
      * This method will print out the grid to Standard Output.
      * 0 => blocked
@@ -542,6 +553,8 @@ public class Grid {
     } // ends the printGrid() method
 
 
+
+
     /**
      * This method will print out all the hard centers of the grid.
      */
@@ -551,6 +564,8 @@ public class Grid {
             System.out.println("(" + hardCellCenters[i][0] + " , " + hardCellCenters[i][1] + ")");
         }
     } // ends that printHardCenters() method
+
+
 
 
     /**
@@ -591,6 +606,8 @@ public class Grid {
     } // ends the saveGrid() method
     
 
+
+    
     /**
      * This method will import a new Grid from a txt file.
      * @param file is the file pointer to the txt file with all the Grid contents to import from

@@ -12,8 +12,8 @@ import Heuristic.ManhattanDistance;
 import Heuristic.ManhattanDistanceByFour;
 import Grid.Cell;
 import SearchAlgos.UniformCostSearch;
-import SearchAlgos.WeightedAStart;
-import SearchAlgos.aStar;
+import SearchAlgos.WeightedAStarSearch;
+import SearchAlgos.AStarSearch;
 
 public class test {
     public static void main(String[] args) {
@@ -25,7 +25,7 @@ public class test {
         //test.printHardCenters();
         //test.printGrid();
         
-        
+        // **** all 5 heuristics *****
         //EuclideanDistance heu = new EuclideanDistance(test);
         //EuclideanDistanceByFour heu = new EuclideanDistanceByFour(test);
         //ManhattanDistance heu = new ManhattanDistance(test);
@@ -33,7 +33,9 @@ public class test {
         //Chebyshev heu = new Chebyshev(test);
 
 
-        aStar a = new aStar(test,heu);
+        // A* Search
+
+        AStarSearch a = new AStarSearch(test,heu);
         a.run();
         List<Cell> path = a.getPath();
         Set<Cell> explored = a.getExploredCells();
@@ -62,9 +64,9 @@ public class test {
         System.out.println();
         System.out.println();
 
-        
-        WeightedAStart a2 = new WeightedAStart(test, heu, 2.5f);
-        //a = new aStar(test,heu2);
+        // Weighted A* Search
+
+        WeightedAStarSearch a2 = new WeightedAStarSearch(test, heu, 2.5f);
         a2.run();
         path = a2.getPath();
         explored = a2.getExploredCells();
@@ -75,7 +77,6 @@ public class test {
                 } else if (explored.contains(test.getGrid()[i][j])) {
                     System.out.print("V");
                 } else {
-                    //System.out.print("1");
                     if (test.getGrid()[i][j].getType() == 3) {
                         System.out.print("a");
                     } else if (test.getGrid()[i][j].getType() == 4) {
@@ -94,10 +95,9 @@ public class test {
         System.out.println();
         System.out.println();
 
-        
+        // Uniform Cost Search
 
         UniformCostSearch a3 = new UniformCostSearch(test);
-        //a = new aStar(test,heu2);
         a3.run();
         path = a3.getPath();
         explored = a3.getExploredCells();
@@ -108,7 +108,6 @@ public class test {
                 } else if (explored.contains(test.getGrid()[i][j])) {
                     System.out.print("V");
                 } else {
-                    //System.out.print("1");
                     if (test.getGrid()[i][j].getType() == 3) {
                         System.out.print("a");
                     } else if (test.getGrid()[i][j].getType() == 4) {

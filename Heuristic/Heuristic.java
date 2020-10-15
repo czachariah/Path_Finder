@@ -3,6 +3,7 @@ package Heuristic;
 import Grid.Grid;
 import Grid.Cell;
 
+
 /**
  * This is an abstract class to define different heuristic functions.
  */

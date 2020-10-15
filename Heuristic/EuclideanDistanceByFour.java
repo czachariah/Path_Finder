@@ -3,6 +3,9 @@ package Heuristic;
 import Grid.Grid;
 import Grid.Cell;
 
+/**
+ * This is the (Euclidean Distance / 4) Heuristic Class.
+ */
 public class EuclideanDistanceByFour extends Heuristic{
     @SuppressWarnings("unused")
     // Global Variables
