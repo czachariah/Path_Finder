@@ -7,7 +7,7 @@ import Grid.Cell;
  * This is an abstract class to define different heuristic functions.
  */
 public abstract class Heuristic {
-    
+    @SuppressWarnings("unused")
     // Global Variables
     private Grid grid;
 

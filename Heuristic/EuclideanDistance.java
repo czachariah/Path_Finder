@@ -4,6 +4,7 @@ import Grid.Grid;
 import Grid.Cell;
 
 public class EuclideanDistance extends Heuristic{
+    @SuppressWarnings("unused")
     // Global Variables
     private Grid grid;
     private int end_x;

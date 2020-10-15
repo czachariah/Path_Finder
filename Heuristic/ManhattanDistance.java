@@ -5,7 +5,7 @@ import Grid.Cell;
 
 
 public class ManhattanDistance extends Heuristic {
-    
+    @SuppressWarnings("unused")
     // Global Variables
     private Grid grid;
     private int end_x;

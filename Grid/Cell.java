@@ -1,5 +1,7 @@
 package Grid;
 
+//import java.util.Comparator;
+
 /**
  * This is the Cell class. This will be used in order to construct the Grid.
  * Each Cell has its own unique properties.
@@ -17,7 +19,7 @@ public class Cell {
 	private float hCost;
 	
 	//keep track of shortest path found
-	public Cell parent;
+	public Cell parent = null;
 	
 	public boolean visited = false;
 
@@ -79,10 +81,10 @@ public class Cell {
      * @return a boolean that tells if the Cell has a highway
      */
     public boolean hasHighway() {
-        if (highwayDir == 0) {
-            return false;
-        } else {
+        if (type == 3 || type == 4 || highwayDir != 0) {
             return true;
+        } else {
+            return false;
         }
     } //  ends the hasHighway() method
 
@@ -144,12 +146,6 @@ public class Cell {
 	public void sethCost(float h) {
 		this.hCost = h;
     }
-    
-    // -#   -> one < two
-    // 0    -> one == two
-    // +#    -> one > two 
-    public int compareTo(Cell one , Cell two) {
-        return Float.compare(one.getgCost() + one.getfCost(), two.getgCost() + two.getfCost());
-    }
+
 
 } // ends the Cell class
