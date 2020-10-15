@@ -144,7 +144,6 @@ public class Grid {
      */
     private boolean createHighway() {
         int highwayLen = 0;
-        System.out.println("PREEE LOOP2");
         //int tries = 1;
         int[] startPoint = getBoundaryPoint();  // start point for the highway
         //while (tries <= 10 || startPoint[0] == -1 || startPoint[1] == -1) {
@@ -156,6 +155,10 @@ public class Grid {
         //}
         int curX = startPoint[0];
         int curY = startPoint[1];
+
+        if (curX == -1 || curY == -1) {
+            return false;
+        }
 
         int dir = 0;
         if (curX == 0) { // Top Border
@@ -259,7 +262,6 @@ public class Grid {
      * @param list is the list of coordinates to go through and revert back to normal
      */
     private void resetCurrentHighway(LinkedList<int[]> list) {
-        System.out.println("PRE RESET CURR HIGHWAYS");
         for (int[] arr : list) {
             if (this.grid[arr[0]][arr[1]].getType() == 3) {
                 this.grid[arr[0]][arr[1]].changeType(1);
@@ -269,7 +271,6 @@ public class Grid {
                 this.grid[arr[0]][arr[1]].changeHighwayDir(0);
             } else {}
         }
-        System.out.println("POST RESET CURR HIGHWAYS");
     } // ends the resetCurrentHighway() method
     
 
@@ -278,7 +279,6 @@ public class Grid {
      * This method will be called in order to reset all the highways on the grid.
      */
     private void resetAllHighways() {
-        System.out.println("PRE RESET ALL HIGHWAYS");
         for (int i = 0; i < HEIGHT ; ++i) {
             for (int j = 0 ; j < WIDTH ; ++j) {
                 if (this.grid[i][j].getType() == 3) {
@@ -291,7 +291,6 @@ public class Grid {
                 }
             }
         }
-        System.out.println("POST RESET HIGHWAYS");
     } // ends the resetHighways() method
 
 
@@ -301,47 +300,74 @@ public class Grid {
      * @return an int[2] array which will be the starting point for the highway.
      */
     private int[] getBoundaryPoint() {
-        System.out.println("PRE SET BOUNDARY");
         int randBound = rand.nextInt(4) + 1; // [1,4]
         int [] point = new int[2];
         if (randBound == 1) {  // Top Border
-            System.out.println("top border");
             point[0] = 0; 
-            point[1] = rand.nextInt(160); // [0,159];
+            point[1] = rand.nextInt(WIDTH); // [0,159];
+            int num = 0;
             while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
-                System.out.println("top border BAD");
+                //System.out.println("top border BAD");
 				point[0] = 0; 
-                point[1] = rand.nextInt(160); // [0,159];
+                point[1] = rand.nextInt(WIDTH); // [0,159];
+                ++num;
+                if (num == 30) {
+                    //printGrid();
+                    point[0] = -1; 
+                    point[1] = -1;
+                    return point;
+                }
 			}
 			return point;
         } else if (randBound == 2) { // Right Border
-            System.out.println("right border");
-            point[0] = rand.nextInt(120); // [0,119]
-			point[1] = 159; 
+            point[0] = rand.nextInt(HEIGHT); // [0,119]
+            point[1] = WIDTH-1; 
+            int num = 0;
 			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
-                System.out.println("right border bad");
-                point[0] = rand.nextInt(120); // [0,119]
-			    point[1] = 159;
+                //System.out.println("right border bad");
+                point[0] = rand.nextInt(HEIGHT); // [0,119]
+                point[1] = WIDTH-1;
+                ++num;
+                if (num == 30) {
+                    //printGrid();
+                    point[0] = -1; 
+                    point[1] = -1;
+                    return point;
+                }
             }
 			return point;
         } else if (randBound == 3) {  // Bottom Border
-            System.out.println("bottom border");
-            point[0] = 119;
-			point[1] = rand.nextInt(160); // [0,159]
+            point[0] = HEIGHT-1;
+            point[1] = rand.nextInt(WIDTH); // [0,159]
+            int num = 0;
 			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
-                System.out.println("bottom border bad");
-                point[0] = 119;
-			    point[1] = rand.nextInt(160); // [0,159]
+                //System.out.println("bottom border bad");
+                point[0] = HEIGHT-1;
+                point[1] = rand.nextInt(WIDTH); // [0,159]
+                ++num;
+                if (num == 30) {
+                    //printGrid();
+                    point[0] = -1; 
+                    point[1] = -1;
+                    return point;
+                }
             }
 			return point;
         } else {  // Left Border
-            System.out.println("left border");
-            point[0] = rand.nextInt(120); // [0,119]
-			point[1] = 0; 
+            point[0] = rand.nextInt(HEIGHT); // [0,119]
+            point[1] = 0; 
+            int num = 0;
 			while (this.grid[point[0]][point[1]].hasHighway()) { // Vailidation that chosen random point is not existing highway.
-                System.out.println("left border bad");
-                point[0] = rand.nextInt(120); // [0,119]
-			    point[1] = 0; 
+                //System.out.println("left border bad");
+                point[0] = rand.nextInt(HEIGHT); // [0,119]
+                point[1] = 0; 
+                ++num;
+                if (num == 30) {
+                    //printGrid();
+                    point[0] = -1; 
+                    point[1] = -1;
+                    return point;
+                }
             }
 			return point;
         }

@@ -187,17 +187,18 @@ public abstract class AbstractSearch {
         // add the start to the fringe
         addToFringe(cStart, null, getGCost(cStart,cStart), getHCost(cStart)); // parent = null
 
+        int numNodesSearched = 0;
 		while(fringe.size() > 0) {
+            numNodesSearched++;
             // take the head of the queue (should be minimum fcost by defualt)
             Cell curr = fringe.remove();
             curr.visited = true;
             exploredCells.add(curr);
-            
-            System.out.println(curr.getX() + " , " + curr.getY());
 
             // check if it is the goal Cell
 			if(curr.getX() == cTarget.getX() && curr.getY() == cTarget.getY()){
-				path = getShortestPath(cStart, cTarget, path);
+                path = getShortestPath(cStart, cTarget, path);
+                System.out.println("Number of Nodes Looked Through: " + numNodesSearched);
 				return;
 			}
             
@@ -262,7 +263,8 @@ public abstract class AbstractSearch {
     			int y = c.getY() + j;
     			
     			if(x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && !set.contains(this.grid[x][y])) {
-    				neighbors.add(this.grid[x][y]);
+                    //this.grid[x][y].parent = c;
+                    neighbors.add(this.grid[x][y]);
     				set.add(this.grid[x][y]);
     			}
     		}

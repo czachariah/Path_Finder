@@ -6,6 +6,7 @@ import java.util.Set;
 
 import Grid.Grid;
 import Heuristic.EuclideanDistance;
+import Heuristic.EuclideanDistanceByFour;
 import Grid.Cell;
 import SearchAlgos.aStar;
 
@@ -13,7 +14,6 @@ public class test {
     public static void main(String[] args) {
 
      
-        
         // buliding new grid (start + end + centers + highways + blocked + unblocked)
         Grid test = new Grid();
         test.generateEntireGrid();
@@ -45,7 +45,37 @@ public class test {
         	}
         	System.out.println();
         }
+
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
         
+        EuclideanDistanceByFour heu2 = new EuclideanDistanceByFour(test);
+        a = new aStar(test,heu2);
+        a.run();
+        path = a.getPath();
+        explored = a.getExploredCells();
+        for(int i = 0; i < test.getGrid().length; i++) {
+        	for(int j = 0; j < test.getGrid()[0].length; j++) {
+        		if(path.contains(test.getGrid()[i][j])) {
+                    System.out.print("*");
+                } else if (explored.contains(test.getGrid()[i][j])) {
+                    System.out.print("V");
+                } else {
+                    //System.out.print("1");
+                    if (test.getGrid()[i][j].getType() == 3) {
+                        System.out.print("a");
+                    } else if (test.getGrid()[i][j].getType() == 4) {
+                        System.out.print("b");
+                    } else {
+                        System.out.print(test.getGrid()[i][j].getType());
+                    }
+                }
+        	}
+        	System.out.println();
+        }
         
 
         //Grid temp = new Grid(10, 10);
