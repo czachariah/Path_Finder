@@ -336,6 +336,24 @@ public abstract class AbstractSearch {
     	return neighbors;
     } // ends the getNeighbors() method
 
+    /**
+     * This method will return the total cost of the shortest path obtained by the algorithm.
+     * @return
+     */
+    public float getPathCost() {
+        if (path == null) {
+            return -1f;
+        }
+        float totalCost = 0f;
+        Cell cur = path.get(0);
+        for (Cell next : path) {
+            totalCost+= getGCost(cur, next);
+            cur = next;
+        }
+        return totalCost;
+
+    }
+
 
 } // ends the AbstractSearch class
 

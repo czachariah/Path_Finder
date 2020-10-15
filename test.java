@@ -58,7 +58,8 @@ public class test {
         	}
         	System.out.println();
         }
-
+        System.out.println(path.size());
+        System.out.println("Cost of Path: " + a.getPathCost());
 
         System.out.println();
         System.out.println();
@@ -66,7 +67,7 @@ public class test {
 
         // Weighted A* Search
 
-        WeightedAStarSearch a2 = new WeightedAStarSearch(test, heu, 2.5f);
+        WeightedAStarSearch a2 = new WeightedAStarSearch(test, heu, 1.5f);
         a2.run();
         path = a2.getPath();
         explored = a2.getExploredCells();
@@ -88,6 +89,8 @@ public class test {
         	}
         	System.out.println();
         }
+        System.out.println(path.size());
+        System.out.println("Cost of Path: " + a.getPathCost());
 
 
 
@@ -119,6 +122,8 @@ public class test {
         	}
         	System.out.println();
         }
+        System.out.println(path.size());
+        System.out.println("Cost of Path: " + a.getPathCost());
         
 
         //Grid temp = new Grid(10, 10);
