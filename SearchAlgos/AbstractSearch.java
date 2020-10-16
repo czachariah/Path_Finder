@@ -249,13 +249,17 @@ public abstract class AbstractSearch {
 				if(c.getType() == 0) {
                     continue;
                 }	
+
+                // find the new total gCost from current cell to the neighbor
                 float gCostCurrToNeighbor = curr.getgCost() + getGCost(curr, c);
                 if (!exploredCells.contains(c)) {
-                    if (!fringe.contains(c)) {
+                    if (!fringe.contains(c)) { // not explored yet and isn't on the fringe
                         addToFringe(c, curr, gCostCurrToNeighbor, getHCost(c));
                     } else {
+                        // already on the fringe, but if the neighbor seems to be a better/cheap path going through this current cell, 
+                        // replace the gCost of this neightbor and update the fringe with it
                         if (gCostCurrToNeighbor <= c.getgCost()) {
-                            addToFringe(c, curr, gCostCurrToNeighbor, getHCost(c));
+                            addToFringe(c, curr, gCostCurrToNeighbor, getHCost(c)); // will do the update (remove and insert with new info) if necessary
                         }
                     } 
                 }
@@ -311,7 +315,6 @@ public abstract class AbstractSearch {
     } // ends the addToFringe() method 
 
     
-    // this method returns a list of the neighbors of the Cell
     /**
      * This method will get the neighbors of the current cell.
      * @param c is the current cell
@@ -356,21 +359,3 @@ public abstract class AbstractSearch {
 
 
 } // ends the AbstractSearch class
-
-/*
-// my version 
-if(gCostCurrToNeighbor <= c.getgCost() || !fringe.contains(c)) {			
-					if(!fringe.contains(c)) {
-                        addToFringe(c, curr, getGCost(curr, c), getHCost(c));
-                    } else {
-                        addToFringe(c, curr, getGCost(curr, c), getHCost(c));
-                    }
-                }
-                
-                // before
-                if(gCostCurrToNeighbor < c.getgCost() || !fringe.contains(c)) {			
-					if(!fringe.contains(c)) {
-                        addToFringe(c, curr, getGCost(curr, c), getHCost(c));
-                    }
-				}
-*/

@@ -15,7 +15,8 @@ public class Cell {
     private float fCost;        // fCost + hCost
 	
 	public Cell parent;         // this is the parent of the Cell, this will be used to keep track of the shortest path
-	public boolean visited;     // know if the Cell has been visited or not
+    public boolean visited;     // know if the Cell has been visited or not
+    public boolean hasBeenExplored;     // know if the cell has been explored in sequential search 
 
 
     /**
@@ -34,6 +35,7 @@ public class Cell {
         this.hCost = 0;
         this.parent = null;
         this.visited = false;
+        this.hasBeenExplored = false;
     } // ends the Cell() constructor
 
 

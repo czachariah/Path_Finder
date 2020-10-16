@@ -1,6 +1,7 @@
 
 //import java.io.File;
 //import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -144,7 +145,7 @@ public class test {
 
         
 
-
+*/
 
         // TESTING SEQUENTIAL SEARCH 
 
@@ -152,14 +153,15 @@ public class test {
         grid.generateEntireGrid();
 
         SequentialAStrarSearch a4 = new SequentialAStrarSearch(grid,1.5f, 2f);
+        a4.run();
         List<Cell> path = a4.getPath();
-        Set<Cell> explored = a4.getExploredCells();
+        HashMap<Cell, Cell[]> exploredCells = a4.getExploredCells();
 
         for(int i = 0; i < grid.getGrid().length; i++) {
         	for(int j = 0; j < grid.getGrid()[0].length; j++) {
         		if(path.contains(grid.getGrid()[i][j])) {
                     System.out.print("*");
-                } else if (explored.contains(grid.getGrid()[i][j])) {
+                } else if (exploredCells.containsKey(grid.getGrid()[i][j])) {
                     System.out.print("V");
                 } else {
                     if (grid.getGrid()[i][j].getType() == 3) {
@@ -173,6 +175,6 @@ public class test {
         	}
         	System.out.println();
         }
-*/
+
     }    
 }
