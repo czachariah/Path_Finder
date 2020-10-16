@@ -78,7 +78,7 @@ public class Grid {
             resetAllHighways();
         }
         setBlockedCells();
-        setStartAndEnd();
+        //setStartAndEnd();
     } // ends the generateEntireGrid() 
 
 
@@ -398,7 +398,7 @@ public class Grid {
     /**
      * This method will set the start and end cells in the grid.
      */
-    private void setStartAndEnd() {
+    public void setStartAndEnd() {
         int dist = 0;
         int x1 , y1, x2, y2;
         x1 = y1 = x2 = y2 = 0;

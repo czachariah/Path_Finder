@@ -16,7 +16,7 @@ import Heuristic.*;
  * This is the Sequential A Star Search Class.
  * This search method will use heuristics sequentially as it tries to find the path from start to end.
  */
-public class SequentialAStrarSearch {
+public class SequentialAStarSearch {
     // Global variables
     Cell[][] grid;                // main grid to conduct searches on
     float w1;                     // w1(≥ 1.0) is used to inflate the heuristic values for each of the search procedures, similar to Weighted-A
@@ -31,6 +31,8 @@ public class SequentialAStrarSearch {
     Cell cTarget;       // target cell
     int[][] start;      // start Cell location
     int[][] end;        // target Cell location
+    
+    public int index;
 
 
 
@@ -38,9 +40,9 @@ public class SequentialAStrarSearch {
      * This is the constructor of the Sequential A* Search.
      * @param grid the current grid to run the search on
      * @param weight1 the weight to inflate the h-values of the the heuristics (all except the first)
-     * @param wieght2 the wieght to use as a factor in prioritizing the inadmissible over the admissible heuristic
+     * @param wieght2 the weight to use as a factor in prioritizing the inadmissible over the admissible heuristic
      */
-    public SequentialAStrarSearch(Grid curGrid , float weight1 , float wieght2) {
+    public SequentialAStarSearch(Grid curGrid , float weight1 , float wieght2) {
         this.grid = curGrid.getGrid();
         this.w1 = weight1;
         this.w2 = wieght2;
@@ -143,6 +145,7 @@ public class SequentialAStrarSearch {
             finalPath.add(0,ptr);
 			ptr = temp;
 		}
+		index = fringe;
 		return finalPath;
     } // ends the pathFound() method
 
@@ -186,6 +189,7 @@ public class SequentialAStrarSearch {
         cur.sethCost(hCost);
         cur.visited = true;
         cur.parent = parent;
+        cur.index = whichFringe;
 
         correctFringe.add(cur);
         insertCellIntoMap(cur, whichFringe);
@@ -240,7 +244,7 @@ public class SequentialAStrarSearch {
      */
     public void createPlaceForCellOnMap(Cell cell) {
         // create array to use as value for the key (cell)
-        Cell[] cellArr = new Cell[5]; 
+        Cell[] cellArr = new Cell[6]; 
         for (int i = 0 ; i < 5 ; ++i) {
             Cell temp = new Cell(cell.getX(),cell.getY(),cell.getType(),cell.getHighwayDir());
             temp.setgCost(Integer.MAX_VALUE); // use the Intger.MAX_VALUE as infinity for the purpose of this algorithm

@@ -4,6 +4,8 @@
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.*;
+
 
 import Grid.Grid;
 import Heuristic.Chebyshev;
@@ -16,11 +18,79 @@ import Grid.Cell;
 import SearchAlgos.UniformCostSearch;
 import SearchAlgos.WeightedAStarSearch;
 import SearchAlgos.AStarSearch;
-import SearchAlgos.SequentialAStrarSearch;
+import SearchAlgos.SequentialAStarSearch;
 
 public class test {
+	
+	public static void printSequentialGrid(Grid test, List<Cell> path, HashMap<Cell, Cell[]> exploredCells) {
+        for(int i = 0; i < test.getGrid().length; i++) {
+        	for(int j = 0; j < test.getGrid()[0].length; j++) {
+        		if(path.contains(test.getGrid()[i][j])) {
+                    System.out.print("*");
+                } else if (exploredCells.containsKey(test.getGrid()[i][j])) {
+                    System.out.print("V");
+                } else {
+                    if (test.getGrid()[i][j].getType() == 3) {
+                        System.out.print("a");
+                    } else if (test.getGrid()[i][j].getType() == 4) {
+                        System.out.print("b");
+                    } else {
+                        System.out.print(test.getGrid()[i][j].getType());
+                    }
+                }
+        	}
+        	System.out.println();
+        }
+	}
+	
     public static void main(String[] args) {
+<<<<<<< HEAD
+    	
+    	for(int map = 0; map < 5; map++) {
+    		Grid grid = new Grid();
+    		grid.generateEntireGrid();
+    		for(int sgp = 0; sgp < 10; sgp++) {
+    			grid.setStartAndEnd();
+    			grid.printGrid();
+    			SequentialAStarSearch a = new SequentialAStarSearch(grid, 1.5f, 2f);
+    	        a.run();
+    	        List<Cell> path = a.getPath();
+    	        HashMap<Cell, Cell[]> exploredCells = a.getExploredCells();
+    	        printSequentialGrid(grid, path, exploredCells);
+    			while(true) {
+    				Scanner input = new Scanner(System.in);
+    				System.out.println("Enter row col separated by a ','. Enter 'next' to go to next grid");
+    				String str = input.next();
+    				try {
+    					System.out.println(str);
+	    				if(str.equals("next"))
+	    					break;
+	    				int row = Integer.parseInt(str.substring(0, str.indexOf(",")));
+	    				int col = Integer.parseInt(str.substring(str.indexOf(",") + 1));
+	    				System.out.println("gCost:" + exploredCells.get(grid.getGrid()[row][col])[grid.getGrid()[row][col].index].getgCost());
+	    				System.out.println("hCost:" + exploredCells.get(grid.getGrid()[row][col])[grid.getGrid()[row][col].index].gethCost());
+	    				System.out.println("fCost:" + exploredCells.get(grid.getGrid()[row][col])[grid.getGrid()[row][col].index].getfCost());
+    				}
+    				catch(Exception e) {
+    					System.out.println(e);
+    					System.out.println("Invalid format. Try again.");
+    				}
+    				
+    			}
+    			
+    		}
+    	}
+    	
+    	
+    	
+    	/**
+    	
+=======
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> debf81dddd5d34e16fef3311e715b7dca69b1174
+>>>>>>> Stashed changes
         // buliding new grid (start + end + centers + highways + blocked + unblocked)
         Grid test = new Grid();
         test.generateEntireGrid();
@@ -140,7 +210,7 @@ public class test {
         // TESTING SEQUENTIAL SEARCH 
         System.out.println("SEQUENTIAL A* SEARCH");
 
-        SequentialAStrarSearch a4 = new SequentialAStrarSearch(test,1.5f, 2f);
+        SequentialAStarSearch a4 = new SequentialAStarSearch(test,1.5f, 2f);
         a4.run();
         path = a4.getPath();
         HashMap<Cell, Cell[]> exploredCells = a4.getExploredCells();
@@ -186,7 +256,6 @@ public class test {
         
 
 */
-
 
     }    
 }
