@@ -258,7 +258,7 @@ public abstract class AbstractSearch {
                     } else {
                         // already on the fringe, but if the neighbor seems to be a better/cheap path going through this current cell, 
                         // replace the gCost of this neightbor and update the fringe with it
-                        if (gCostCurrToNeighbor <= c.getgCost()) {
+                        if (gCostCurrToNeighbor < c.getgCost()) {
                             addToFringe(c, curr, gCostCurrToNeighbor, getHCost(c)); // will do the update (remove and insert with new info) if necessary
                         }
                     } 

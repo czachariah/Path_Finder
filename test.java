@@ -21,7 +21,6 @@ import SearchAlgos.SequentialAStrarSearch;
 public class test {
     public static void main(String[] args) {
 
-     
         // buliding new grid (start + end + centers + highways + blocked + unblocked)
         Grid test = new Grid();
         test.generateEntireGrid();
@@ -167,7 +166,7 @@ public class test {
         System.out.println(path.size());
         System.out.println("Cost of Path: " + a4.getPathCost());
 
-        
+    
         
 /*
         //Grid temp = new Grid(10, 10);

@@ -31,7 +31,7 @@ public class Cell {
         this.y = y;
         this.type = type;
         this.highwayDir = highwayDir;
-        this.gCost = 0;
+        this.gCost = Integer.MAX_VALUE;
         this.hCost = 0;
         this.parent = null;
         this.visited = false;
