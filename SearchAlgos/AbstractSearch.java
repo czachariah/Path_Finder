@@ -341,7 +341,7 @@ public abstract class AbstractSearch {
 
     /**
      * This method will return the total cost of the shortest path obtained by the algorithm.
-     * @return
+     * @return the cost of the path
      */
     public float getPathCost() {
         if (path == null) {

@@ -88,11 +88,13 @@ public class SequentialAStrarSearch {
         */
         PriorityQueue<Cell> admissibleFringe = allFringes.get(0);
         float admissCost, otherFringeCost;
-
+        int numNodesSearched = 0; // just to count the number of nodes that were visited
         // this will be the main check for the algorithm : minimum cost must be less than infinity ( A.K.A. Integer.MAX_VALUE)
         while ((admissCost = getTotalFCost(admissibleFringe.peek()))  < Integer.MAX_VALUE) {
+            //numNodesSearched++;
             // must go through all the other fringes in order to find one that has a lower fCost that the anchor (admissible one)
             for (int i = 1 ; i < 5 ; ++i) {
+                numNodesSearched++;
                 PriorityQueue<Cell> curFringe = allFringes.get(i);
                 otherFringeCost = getTotalFCost(curFringe.peek());
                 // here we check to see if this other fringe is getting us a better fCost that the admissible one 
@@ -103,6 +105,7 @@ public class SequentialAStrarSearch {
                         if (goalGCost < Integer.MAX_VALUE) {
                             // path was found, the target gCost was changed and the current fringe cell had a higher value
                             path = pathFound(i);
+                            System.out.println("Number of Nodes Looked Through: " + numNodesSearched);
                             return;
                         }
                     } else {
@@ -113,6 +116,7 @@ public class SequentialAStrarSearch {
                     if (goalGCost <= admissCost) {
                         if (admissCost < Integer.MAX_VALUE) {
                             path = pathFound(0);
+                            System.out.println("Number of Nodes Looked Through: " + numNodesSearched);
                             return;
                         }
                     } else {
@@ -477,5 +481,21 @@ public class SequentialAStrarSearch {
     } // ends the getNeighbors() method
 
 
+    /**
+     * This method will return the total cost of the shortest path obtained by the algorithm.
+     * @return the total cost of the path
+     */
+    public float getPathCost() {
+        if (path == null) {
+            return -1f;
+        }
+        float totalCost = 0f;
+        Cell cur = path.get(0);
+        for (Cell next : path) {
+            totalCost+= getGCost(cur, next);
+            cur = next;
+        }
+        return totalCost;
+    } // ends the getPathCost() method
 
 } // ends the SequentialAStarSearch class

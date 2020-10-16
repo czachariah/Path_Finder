@@ -21,7 +21,7 @@ import SearchAlgos.SequentialAStrarSearch;
 public class test {
     public static void main(String[] args) {
 
-     /*
+     
         // buliding new grid (start + end + centers + highways + blocked + unblocked)
         Grid test = new Grid();
         test.generateEntireGrid();
@@ -37,6 +37,7 @@ public class test {
 
 
         // A* Search
+        System.out.println("A* SEARCH");
 
         AStarSearch a = new AStarSearch(test,heu);
         a.run();
@@ -69,6 +70,7 @@ public class test {
         System.out.println();
 
         // Weighted A* Search
+        System.out.println("WEIGHTED A* SEARCH");
 
         WeightedAStarSearch a2 = new WeightedAStarSearch(test, heu, 1.5f);
         a2.run();
@@ -93,7 +95,7 @@ public class test {
         	System.out.println();
         }
         System.out.println(path.size());
-        System.out.println("Cost of Path: " + a.getPathCost());
+        System.out.println("Cost of Path: " + a2.getPathCost());
 
 
 
@@ -102,6 +104,7 @@ public class test {
         System.out.println();
 
         // Uniform Cost Search
+        System.out.println("UNIFORM COST SEARCH");
 
         UniformCostSearch a3 = new UniformCostSearch(test);
         a3.run();
@@ -126,9 +129,47 @@ public class test {
         	System.out.println();
         }
         System.out.println(path.size());
-        System.out.println("Cost of Path: " + a.getPathCost());
-        
+        System.out.println("Cost of Path: " + a3.getPathCost());
 
+
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+
+        // TESTING SEQUENTIAL SEARCH 
+        System.out.println("SEQUENTIAL A* SEARCH");
+
+        SequentialAStrarSearch a4 = new SequentialAStrarSearch(test,1.5f, 2f);
+        a4.run();
+        path = a4.getPath();
+        HashMap<Cell, Cell[]> exploredCells = a4.getExploredCells();
+
+        for(int i = 0; i < test.getGrid().length; i++) {
+        	for(int j = 0; j < test.getGrid()[0].length; j++) {
+        		if(path.contains(test.getGrid()[i][j])) {
+                    System.out.print("*");
+                } else if (exploredCells.containsKey(test.getGrid()[i][j])) {
+                    System.out.print("V");
+                } else {
+                    if (test.getGrid()[i][j].getType() == 3) {
+                        System.out.print("a");
+                    } else if (test.getGrid()[i][j].getType() == 4) {
+                        System.out.print("b");
+                    } else {
+                        System.out.print(test.getGrid()[i][j].getType());
+                    }
+                }
+        	}
+        	System.out.println();
+        }
+        System.out.println(path.size());
+        System.out.println("Cost of Path: " + a4.getPathCost());
+
+        
+        
+/*
         //Grid temp = new Grid(10, 10);
         //temp.endCell[0][0] = 2;
         //temp.endCell[0][1] = 1;
@@ -147,34 +188,6 @@ public class test {
 
 */
 
-        // TESTING SEQUENTIAL SEARCH 
-
-        Grid grid = new Grid();
-        grid.generateEntireGrid();
-
-        SequentialAStrarSearch a4 = new SequentialAStrarSearch(grid,1.5f, 2f);
-        a4.run();
-        List<Cell> path = a4.getPath();
-        HashMap<Cell, Cell[]> exploredCells = a4.getExploredCells();
-
-        for(int i = 0; i < grid.getGrid().length; i++) {
-        	for(int j = 0; j < grid.getGrid()[0].length; j++) {
-        		if(path.contains(grid.getGrid()[i][j])) {
-                    System.out.print("*");
-                } else if (exploredCells.containsKey(grid.getGrid()[i][j])) {
-                    System.out.print("V");
-                } else {
-                    if (grid.getGrid()[i][j].getType() == 3) {
-                        System.out.print("a");
-                    } else if (grid.getGrid()[i][j].getType() == 4) {
-                        System.out.print("b");
-                    } else {
-                        System.out.print(grid.getGrid()[i][j].getType());
-                    }
-                }
-        	}
-        	System.out.println();
-        }
 
     }    
 }
