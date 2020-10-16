@@ -8,17 +8,19 @@ import Grid.Grid;
 import Heuristic.Chebyshev;
 import Heuristic.EuclideanDistance;
 import Heuristic.EuclideanDistanceByFour;
+import Heuristic.Heuristic;
 import Heuristic.ManhattanDistance;
 import Heuristic.ManhattanDistanceByFour;
 import Grid.Cell;
 import SearchAlgos.UniformCostSearch;
 import SearchAlgos.WeightedAStarSearch;
 import SearchAlgos.AStarSearch;
+import SearchAlgos.SequentialAStrarSearch;
 
 public class test {
     public static void main(String[] args) {
 
-     
+     /*
         // buliding new grid (start + end + centers + highways + blocked + unblocked)
         Grid test = new Grid();
         test.generateEntireGrid();
@@ -139,5 +141,38 @@ public class test {
         //test2.importGrid(file);     // file that holds other Grid contents to copy over
         //test2.printHardCenters(); 
         //test2.printGrid();
+
+        
+
+
+
+        // TESTING SEQUENTIAL SEARCH 
+
+        Grid grid = new Grid();
+        grid.generateEntireGrid();
+
+        SequentialAStrarSearch a4 = new SequentialAStrarSearch(grid,1.5f, 2f);
+        List<Cell> path = a4.getPath();
+        Set<Cell> explored = a4.getExploredCells();
+
+        for(int i = 0; i < grid.getGrid().length; i++) {
+        	for(int j = 0; j < grid.getGrid()[0].length; j++) {
+        		if(path.contains(grid.getGrid()[i][j])) {
+                    System.out.print("*");
+                } else if (explored.contains(grid.getGrid()[i][j])) {
+                    System.out.print("V");
+                } else {
+                    if (grid.getGrid()[i][j].getType() == 3) {
+                        System.out.print("a");
+                    } else if (grid.getGrid()[i][j].getType() == 4) {
+                        System.out.print("b");
+                    } else {
+                        System.out.print(grid.getGrid()[i][j].getType());
+                    }
+                }
+        	}
+        	System.out.println();
+        }
+*/
     }    
 }
