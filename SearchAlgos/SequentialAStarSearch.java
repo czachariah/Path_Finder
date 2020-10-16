@@ -32,7 +32,7 @@ public class SequentialAStarSearch {
     int[][] start;      // start Cell location
     int[][] end;        // target Cell location
     
-    public int index;
+    //public int index;
 
 
 
@@ -145,7 +145,6 @@ public class SequentialAStarSearch {
             finalPath.add(0,ptr);
 			ptr = temp;
 		}
-		index = fringe;
 		return finalPath;
     } // ends the pathFound() method
 
@@ -190,6 +189,14 @@ public class SequentialAStarSearch {
         cur.visited = true;
         cur.parent = parent;
         cur.index = whichFringe;
+
+        // my new changes ......
+        grid[cur.getX()][cur.getY()].setgCost(cur.getgCost());
+        grid[cur.getX()][cur.getY()].sethCost(cur.gethCost());
+        grid[cur.getX()][cur.getY()].setfCost(cur.getgCost() + cur.gethCost());
+        grid[cur.getX()][cur.getY()].visited = true;
+        grid[cur.getX()][cur.getY()].parent = cur.parent;
+        grid[cur.getX()][cur.getY()].index = whichFringe;
 
         correctFringe.add(cur);
         insertCellIntoMap(cur, whichFringe);

@@ -44,7 +44,6 @@ public class test {
 	}
 	
     public static void main(String[] args) {
-<<<<<<< HEAD
     	
     	for(int map = 0; map < 5; map++) {
     		Grid grid = new Grid();
@@ -72,8 +71,7 @@ public class test {
 	    				System.out.println("fCost:" + exploredCells.get(grid.getGrid()[row][col])[grid.getGrid()[row][col].index].getfCost());
     				}
     				catch(Exception e) {
-    					System.out.println(e);
-    					System.out.println("Invalid format. Try again.");
+    					System.out.println("Invalid format OR Cell is not on the path OR Cell has not been visited.\nPlease Try again.");
     				}
     				
     			}
@@ -84,13 +82,6 @@ public class test {
     	
     	
     	/**
-    	
-=======
-
-<<<<<<< Updated upstream
-=======
->>>>>>> debf81dddd5d34e16fef3311e715b7dca69b1174
->>>>>>> Stashed changes
         // buliding new grid (start + end + centers + highways + blocked + unblocked)
         Grid test = new Grid();
         test.generateEntireGrid();
