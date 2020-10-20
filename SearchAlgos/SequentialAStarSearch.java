@@ -38,21 +38,17 @@ public class SequentialAStarSearch {
 
     /**
      * This is the constructor of the Sequential A* Search.
-     * @param grid the current grid to run the search on
+     * @param curGrid the current grid to run the search on
      * @param weight1 the weight to inflate the h-values of the the heuristics (all except the first)
-     * @param wieght2 the weight to use as a factor in prioritizing the inadmissible over the admissible heuristic
+     * @param weight2 the weight to use as a factor in prioritizing the inadmissible over the admissible heuristic
+     * @param arr the array of Heuristics with the first one being the anchor
      */
-    public SequentialAStarSearch(Grid curGrid , float weight1 , float wieght2) {
+    public SequentialAStarSearch(Grid curGrid , float weight1 , float weight2 , Heuristic[] arr) {
         this.grid = curGrid.getGrid();
         this.w1 = weight1;
-        this.w2 = wieght2;
+        this.w2 = weight2;
         
-        this.hArray = new Heuristic[5];
-		hArray[0] = new ManhattanDistance(curGrid);
-		hArray[1] = new ManhattanDistanceByFour(curGrid);
-		hArray[2] = new Chebyshev(curGrid);
-		hArray[3] = new EuclideanDistance(curGrid);
-        hArray[4] = new EuclideanDistanceByFour(curGrid);
+        this.hArray = arr;
 
         this.start = curGrid.startCell; 
         this.end = curGrid.endCell;
@@ -90,13 +86,10 @@ public class SequentialAStarSearch {
         */
         PriorityQueue<Cell> admissibleFringe = allFringes.get(0);
         float admissCost, otherFringeCost;
-        int numNodesSearched = 0; // just to count the number of nodes that were visited
         // this will be the main check for the algorithm : minimum cost must be less than infinity ( A.K.A. Integer.MAX_VALUE)
         while ((admissCost = getTotalFCost(admissibleFringe.peek()))  < Integer.MAX_VALUE) {
-            //numNodesSearched++;
             // must go through all the other fringes in order to find one that has a lower fCost that the anchor (admissible one)
             for (int i = 1 ; i < 5 ; ++i) {
-                numNodesSearched++;
                 PriorityQueue<Cell> curFringe = allFringes.get(i);
                 otherFringeCost = getTotalFCost(curFringe.peek());
                 // here we check to see if this other fringe is getting us a better fCost that the admissible one 
@@ -107,7 +100,6 @@ public class SequentialAStarSearch {
                         if (goalGCost < Integer.MAX_VALUE) {
                             // path was found, the target gCost was changed and the current fringe cell had a higher value
                             path = pathFound(i);
-                            System.out.println("Number of Nodes Looked Through: " + numNodesSearched);
                             return;
                         }
                     } else {
@@ -118,7 +110,6 @@ public class SequentialAStarSearch {
                     if (goalGCost <= admissCost) {
                         if (admissCost < Integer.MAX_VALUE) {
                             path = pathFound(0);
-                            System.out.println("Number of Nodes Looked Through: " + numNodesSearched);
                             return;
                         }
                     } else {
@@ -415,9 +406,9 @@ public class SequentialAStarSearch {
      * @param whichHeuristic the specifc index number that represents which heurisitc to use to obtain the hCost
      * @return the hCost
      */
-    public float getHCost(Cell cell , int whichHeurisitc) {
+    public float getHCost(Cell cell , int whichHeuristic) {
         // for this algorithm, use the w1 weight in order to inflate the heuristic values for each of the search procedures, similar to Weighted-A
-        return w1*hArray[whichHeurisitc].getHeuristic(cell);
+        return w1*hArray[whichHeuristic].getHeuristic(cell);
     } // ends the getHCost() method
 
 

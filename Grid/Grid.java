@@ -39,6 +39,7 @@ public class Grid {
     public int[][] endCell = new int[1][2];                                     // location of the endCell
 
 
+
     /**
      * This is the Grid constructor.
      * This will initialize the grid will unblocked cells. 
@@ -52,20 +53,7 @@ public class Grid {
             }
         }
     } // ends the Grid() constructor
-    
 
-
-
-    //other constructor to test smaller size grids
-    public Grid(int x, int y) {
-    	this.grid = new Cell[x][y];
-    	for(int i = 0; i < x; i++) {
-    		for(int j = 0; j < y; j++) {
-    			this.grid[i][j] = new Cell(i, j, 1, 0);
-    		}
-    	}
-    }
-    
 
 
 
@@ -78,9 +66,8 @@ public class Grid {
             resetAllHighways();
         }
         setBlockedCells();
-        //setStartAndEnd();
+        setStartAndEnd();
     } // ends the generateEntireGrid() 
-
 
 
 
@@ -473,8 +460,6 @@ public class Grid {
         startCell[0][1] = y1;
         endCell[0][0] = x2;
         endCell[0][1] = y2;
-        System.out.println("start: (" + startCell[0][0] + " , " + startCell[0][1] + ")");
-        System.out.println("end: (" + endCell[0][0] + " , " + endCell[0][1] + ")");
     } // ends the setStartAndEnd() method
 
 
@@ -661,6 +646,7 @@ public class Grid {
             reader.close();
             fileToRead.close();
         } catch (IOException e) {
+            System.out.println(e);
             System.out.println("Error importing grid.");
         }
     } // ends the importGrid() method

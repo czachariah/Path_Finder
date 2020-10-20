@@ -226,11 +226,8 @@ public abstract class AbstractSearch {
         
         // add the start to the fringe
         addToFringe(cStart, null, getGCost(cStart,cStart), getHCost(cStart)); // parent = null
-        //System.out.println(cStart.getfCost() + " = " + cStart.getgCost() + " + " + cStart.gethCost());
-        // some info about how many cells the algo has to go through to get from start to end
-        int numNodesSearched = 0;
+
 		while(fringe.size() > 0) {
-            numNodesSearched++;
             // take the head of the queue (should be minimum fcost by defualt becuase of the heap/priority queue)
             Cell curr = fringe.poll();
             curr.visited = true;
@@ -239,7 +236,6 @@ public abstract class AbstractSearch {
             // check if it is the goal Cell
 			if(curr.getX() == cTarget.getX() && curr.getY() == cTarget.getY()){
                 path = getShortestPath(cStart, cTarget);
-                System.out.println("Number of Nodes Looked Through: " + numNodesSearched);
 				return;
 			}
             
@@ -254,20 +250,15 @@ public abstract class AbstractSearch {
                 float gCostCurrToNeighbor = curr.getgCost() + getGCost(curr, c);
                 if (!exploredCells.contains(c)) {
                     if (!fringe.contains(c)) { // not explored yet and isn't on the fringe
-                        addToFringe(c, curr, gCostCurrToNeighbor, getHCost(c));
-                    } else {
-                        // already on the fringe, but if the neighbor seems to be a better/cheap path going through this current cell, 
-                        // replace the gCost of this neightbor and update the fringe with it
                         if (gCostCurrToNeighbor < c.getgCost()) {
                             addToFringe(c, curr, gCostCurrToNeighbor, getHCost(c)); // will do the update (remove and insert with new info) if necessary
                         }
-                    } 
+                    }
                 }
             }
         } // ends the while loop
 
         // if the algorithm gets here, that means that there is no route from the start to the goal
-        System.out.println("NO PATH FOUND");
         path = null;
     } // ends the run() method
 
@@ -276,7 +267,6 @@ public abstract class AbstractSearch {
      * This method is used in order to obtain the shortest path that has been built by the algorithm.
      * @param start the starting Cell
      * @param target the ending Cell
-     * @param path the list that will take the contents of the path
      * @return the path that was generated
      */
     public List<Cell> getShortestPath(Cell start, Cell target){
@@ -310,8 +300,6 @@ public abstract class AbstractSearch {
             fringe.remove(cur);
         }
         fringe.add(cur);
-        exploredCells.add(cur);
-        
     } // ends the addToFringe() method 
 
     
@@ -354,8 +342,6 @@ public abstract class AbstractSearch {
             cur = next;
         }
         return totalCost;
-
-    }
-
+    } // ends the getPathCost() method
 
 } // ends the AbstractSearch class
